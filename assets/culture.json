@@ -1,0 +1,160 @@
+{
+    "blocks": [
+    {
+      "key": "4if5j",
+      "data": {},
+      "text": "Who We Are",
+      "type": "unstyled",
+      "depth": 0,
+      "entityRanges": [],
+      "inlineStyleRanges": [
+        {"style": "BOLD", "length": 10, "offset": 0}
+      ]
+    },
+    {
+      "key": "aq1ja",
+      "data": {},
+      "text":
+          "At Glints, personal and professional growth are just as important as business growth. That's why we created the Glints Culture Code: #RIIBCOH. It defines our values, is what guides our decisions and actions, and is what makes us special:",
+      "type": "unstyled",
+      "depth": 0,
+      "entityRanges": [],
+      "inlineStyleRanges": [
+        {"style": "BOLD", "length": 8, "offset": 133}
+      ]
+    },
+    {
+      "key": "al3qq",
+      "data": {},
+      "text":
+          "Relentlessly Resourceful: Whatever it takes, just make it happen (ethically)",
+      "type": "unordered-list-item",
+      "depth": 0,
+      "entityRanges": [],
+      "inlineStyleRanges": [
+        {"style": "BOLD", "length": 26, "offset": 0}
+      ]
+    },
+    {
+      "key": "eieej",
+      "data": {},
+      "text":
+          "Integrity: Have courage, be guided by the truth, don’t be afraid",
+      "type": "unordered-list-item",
+      "depth": 0,
+      "entityRanges": [],
+      "inlineStyleRanges": [
+        {"style": "BOLD", "length": 9, "offset": 0}
+      ]
+    },
+    {
+      "key": "bqh6l",
+      "data": {},
+      "text": "Impact: Missionaries, not mercenaries",
+      "type": "unordered-list-item",
+      "depth": 0,
+      "entityRanges": [],
+      "inlineStyleRanges": [
+        {"style": "BOLD", "length": 6, "offset": 0}
+      ]
+    },
+    {
+      "key": "ef2n7",
+      "data": {},
+      "text": "Beginners’ Mindset: Stay humble, don’t be attached to ego",
+      "type": "unordered-list-item",
+      "depth": 0,
+      "entityRanges": [],
+      "inlineStyleRanges": [
+        {"style": "BOLD", "length": 19, "offset": 0}
+      ]
+    },
+    {
+      "key": "7ioo4",
+      "data": {},
+      "text": "Customer Obsessed: Customers First",
+      "type": "unordered-list-item",
+      "depth": 0,
+      "entityRanges": [],
+      "inlineStyleRanges": [
+        {"style": "BOLD", "length": 19, "offset": 0}
+      ]
+    },
+    {
+      "key": "d4oee",
+      "data": {},
+      "text":
+          "Ownership: Care intensely about the mission and take responsibility",
+      "type": "unordered-list-item",
+      "depth": 0,
+      "entityRanges": [],
+      "inlineStyleRanges": [
+        {"style": "BOLD", "length": 9, "offset": 0}
+      ]
+    },
+    {
+      "key": "2pc25",
+      "data": {},
+      "text": "High Standards: Dream big and deliver epic outcomes fast",
+      "type": "unordered-list-item",
+      "depth": 0,
+      "entityRanges": [],
+      "inlineStyleRanges": [
+        {"style": "BOLD", "length": 15, "offset": 0}
+      ]
+    },
+    {
+      "key": "3mv7p",
+      "data": {},
+      "text": "Where We Work",
+      "type": "unstyled",
+      "depth": 0,
+      "entityRanges": [],
+      "inlineStyleRanges": [
+        {"style": "BOLD", "length": 13, "offset": 0}
+      ]
+    },
+    {
+      "key": "26g54",
+      "data": {},
+      "text":
+          "Since Glints was officially launched in Singapore in 2015, we've rapidly grown our footprints across Greater Southeast Asia to operate in Singapore, Indonesia, Vietnam, Taiwan and Philippines.",
+      "type": "unstyled",
+      "depth": 0,
+      "entityRanges": [],
+      "inlineStyleRanges": []
+    },
+    {
+      "key": "bch5a",
+      "data": {},
+      "text": " ",
+      "type": "atomic",
+      "depth": 0,
+      "entityRanges": [
+        {"key": 0, "length": 1, "offset": 0}
+      ],
+      "inlineStyleRanges": []
+    },
+    {
+      "key": "62t1",
+      "data": {},
+      "text": "",
+      "type": "unstyled",
+      "depth": 0,
+      "entityRanges": [],
+      "inlineStyleRanges": []
+    }
+  ],
+  "entityMap": {
+    "0": {
+      "data": {
+        "src":
+            "https://images.unsplash.com/photo-1525253086316-d0c936c814f8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
+        "width": "auto",
+        "height": "auto"
+      },
+      "type": "IMAGE",
+      "mutability": "MUTABLE"
+    }
+  }
+}

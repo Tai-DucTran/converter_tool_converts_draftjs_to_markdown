@@ -1,0 +1,131 @@
+{
+    "blocks": [
+      {
+        "key": "2cpbk",
+        "data": {},
+        "text": "Let’s Realize Human Potential.",
+        "type": "unstyled",
+        "depth": 0,
+        "entityRanges": [],
+        "inlineStyleRanges": [
+          {"style": "BOLD", "length": 30, "offset": 0},
+          {"style": "ITALIC", "length": 29, "offset": 0}
+        ]
+      },
+      {
+        "key": "ba8m",
+        "data": {},
+        "text":
+            "At Glints, we are building the #1 tech-enabled recruitment and career discovery platform in Southeast Asia that helps people and organizations realize their human potential.",
+        "type": "unstyled",
+        "depth": 0,
+        "entityRanges": [],
+        "inlineStyleRanges": []
+      },
+      {
+        "key": "50kg",
+        "data": {},
+        "text":
+            "We have impacted many lives but there’s still plenty to be done. If you’re ready to grow and make an impact, you’ve come to the right place.",
+        "type": "unstyled",
+        "depth": 0,
+        "entityRanges": [],
+        "inlineStyleRanges": [
+          {"style": "BOLD", "length": 1, "offset": 64}
+        ]
+      },
+      {
+        "key": "bkqv9",
+        "data": {},
+        "text": "What is Glints?",
+        "type": "unstyled",
+        "depth": 0,
+        "entityRanges": [],
+        "inlineStyleRanges": [
+          {"style": "BOLD", "length": 15, "offset": 0}
+        ]
+      },
+      {
+        "key": "4mgav",
+        "data": {},
+        "text":
+            "Glints is the leading talent ecosystem in Southeast Asia, with an enduring purpose of contributing to a world where people and organizations can realize their human potential.",
+        "type": "unstyled",
+        "depth": 0,
+        "entityRanges": [],
+        "inlineStyleRanges": []
+      },
+      {
+        "key": "1jkll",
+        "data": {},
+        "text":
+            "Today, Glints is the most well-funded and well-capitalized startup in the talent recruitment space in Southeast Asia, with over US$80M in total investments raised till date.",
+        "type": "unstyled",
+        "depth": 0,
+        "entityRanges": [],
+        "inlineStyleRanges": []
+      },
+      {
+        "key": "7tcqa",
+        "data": {},
+        "text":
+            "Our tech-enabled approach to recruitment and career discovery connects more than 3 million candidates to their next dream opportunities. We have also supported more than 50,000 companies in finding top talent and doubling recruitment efficiency.",
+        "type": "unstyled",
+        "depth": 0,
+        "entityRanges": [],
+        "inlineStyleRanges": []
+      },
+      {
+        "key": "7n38u",
+        "data": {},
+        "text":
+            "Our agility and firm hold on our core purpose and values have allowed us to remain resilient and thrive through tumultuous times.",
+        "type": "unstyled",
+        "depth": 0,
+        "entityRanges": [],
+        "inlineStyleRanges": []
+      },
+      {
+        "key": "7c6m",
+        "data": {},
+        "text":
+            "In 2020, we were recognized by LinkedIn as one of the Top 10 Startups in Singapore. In 2022, we were featured in the top 20 of Nikkei-FT-Statista High-Growth Companies Asia-Pacific 2021 list. Moreover, we were also featured in the top 10 fastest-growing companies in Singapore by The Straits Times.",
+        "type": "unstyled",
+        "depth": 0,
+        "entityRanges": [],
+        "inlineStyleRanges": []
+      },
+      {
+        "key": "7pfm5",
+        "data": {},
+        "text": " ",
+        "type": "atomic",
+        "depth": 0,
+        "entityRanges": [
+          {"key": 0, "length": 1, "offset": 0}
+        ],
+        "inlineStyleRanges": []
+      },
+      {
+        "key": "eskav",
+        "data": {},
+        "text": "",
+        "type": "unstyled",
+        "depth": 0,
+        "entityRanges": [],
+        "inlineStyleRanges": []
+      }
+    ],
+    "entityMap": {
+      "0": {
+        "data": {
+          "src":
+              "https://s3-ap-southeast-1.amazonaws.com/glints-dashboard/content/e8cb7bcaea5e0bb94924736ed401c404.png",
+          "width": "auto",
+          "height": "auto"
+        },
+        "type": "EMBEDDED_LINK",
+        "mutability": "MUTABLE"
+      }
+    }
+  }

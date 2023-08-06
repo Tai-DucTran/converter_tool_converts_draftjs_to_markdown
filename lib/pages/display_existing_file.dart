@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer' as deve show log;
 
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ class QuillDisplayExistingFile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final parsedJson = {
+    final jobDescription = {
       "blocks": [
         {
           "key": "dfm6j",
@@ -66,7 +67,7 @@ class QuillDisplayExistingFile extends StatelessWidget {
             {"style": "BOLD", "length": 3, "offset": 5},
             {"style": "BOLD", "length": 4, "offset": 31},
             {"style": "UNDERLINE", "length": 9, "offset": 17},
-            {"style": "ITALIC", "length": 4, "offset": 31}
+            {"style": "ITALIC", "length": 3, "offset": 31}
           ]
         },
         {
@@ -205,8 +206,302 @@ class QuillDisplayExistingFile extends StatelessWidget {
       ],
       "entityMap": {}
     };
+    // culture having image:
+    final cultureJson = {
+      "blocks": [
+        {
+          "key": "4if5j",
+          "data": {},
+          "text": "Who We Are",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": [
+            {"style": "BOLD", "length": 10, "offset": 0}
+          ]
+        },
+        {
+          "key": "aq1ja",
+          "data": {},
+          "text":
+              "At Glints, personal and professional growth are just as important as business growth. That's why we created the Glints Culture Code: #RIIBCOH. It defines our values, is what guides our decisions and actions, and is what makes us special:",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": [
+            {"style": "BOLD", "length": 8, "offset": 133}
+          ]
+        },
+        {
+          "key": "al3qq",
+          "data": {},
+          "text":
+              "Relentlessly Resourceful: Whatever it takes, just make it happen (ethically)",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": [
+            {"style": "BOLD", "length": 26, "offset": 0}
+          ]
+        },
+        {
+          "key": "eieej",
+          "data": {},
+          "text":
+              "Integrity: Have courage, be guided by the truth, don’t be afraid",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": [
+            {"style": "BOLD", "length": 9, "offset": 0}
+          ]
+        },
+        {
+          "key": "bqh6l",
+          "data": {},
+          "text": "Impact: Missionaries, not mercenaries",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": [
+            {"style": "BOLD", "length": 6, "offset": 0}
+          ]
+        },
+        {
+          "key": "ef2n7",
+          "data": {},
+          "text": "Beginners’ Mindset: Stay humble, don’t be attached to ego",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": [
+            {"style": "BOLD", "length": 19, "offset": 0}
+          ]
+        },
+        {
+          "key": "7ioo4",
+          "data": {},
+          "text": "Customer Obsessed: Customers First",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": [
+            {"style": "BOLD", "length": 19, "offset": 0}
+          ]
+        },
+        {
+          "key": "d4oee",
+          "data": {},
+          "text":
+              "Ownership: Care intensely about the mission and take responsibility",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": [
+            {"style": "BOLD", "length": 9, "offset": 0}
+          ]
+        },
+        {
+          "key": "2pc25",
+          "data": {},
+          "text": "High Standards: Dream big and deliver epic outcomes fast",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": [
+            {"style": "BOLD", "length": 15, "offset": 0}
+          ]
+        },
+        {
+          "key": "3mv7p",
+          "data": {},
+          "text": "Where We Work",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": [
+            {"style": "BOLD", "length": 13, "offset": 0}
+          ]
+        },
+        {
+          "key": "26g54",
+          "data": {},
+          "text":
+              "Since Glints was officially launched in Singapore in 2015, we've rapidly grown our footprints across Greater Southeast Asia to operate in Singapore, Indonesia, Vietnam, Taiwan and Philippines.",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "bch5a",
+          "data": {},
+          "text": " ",
+          "type": "atomic",
+          "depth": 0,
+          "entityRanges": [
+            {"key": 0, "length": 1, "offset": 0}
+          ],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "62t1",
+          "data": {},
+          "text": "",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        }
+      ],
+      "entityMap": {
+        "0": {
+          "data": {
+            "src":
+                "https://images.unsplash.com/photo-1525253086316-d0c936c814f8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
+            "width": "auto",
+            "height": "auto"
+          },
+          "type": "IMAGE",
+          "mutability": "MUTABLE"
+        }
+      }
+    };
 
-    List<String> jsonString = _convertBlocksToString(parsedJson);
+    // description having external-link:
+    final description = {
+      "blocks": [
+        {
+          "key": "2cpbk",
+          "data": {},
+          "text": "Let’s Realize Human Potential.",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": [
+            {"style": "BOLD", "length": 30, "offset": 0},
+            {"style": "ITALIC", "length": 29, "offset": 0}
+          ]
+        },
+        {
+          "key": "ba8m",
+          "data": {},
+          "text":
+              "At Glints, we are building the #1 tech-enabled recruitment and career discovery platform in Southeast Asia that helps people and organizations realize their human potential.",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "50kg",
+          "data": {},
+          "text":
+              "We have impacted many lives but there’s still plenty to be done. If you’re ready to grow and make an impact, you’ve come to the right place.",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": [
+            {"style": "BOLD", "length": 1, "offset": 64}
+          ]
+        },
+        {
+          "key": "bkqv9",
+          "data": {},
+          "text": "What is Glints?",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": [
+            {"style": "BOLD", "length": 15, "offset": 0}
+          ]
+        },
+        {
+          "key": "4mgav",
+          "data": {},
+          "text":
+              "Glints is the leading talent ecosystem in Southeast Asia, with an enduring purpose of contributing to a world where people and organizations can realize their human potential.",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "1jkll",
+          "data": {},
+          "text":
+              "Today, Glints is the most well-funded and well-capitalized startup in the talent recruitment space in Southeast Asia, with over US\$80M in total investments raised till date.",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "7tcqa",
+          "data": {},
+          "text":
+              "Our tech-enabled approach to recruitment and career discovery connects more than 3 million candidates to their next dream opportunities. We have also supported more than 50,000 companies in finding top talent and doubling recruitment efficiency.",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "7n38u",
+          "data": {},
+          "text":
+              "Our agility and firm hold on our core purpose and values have allowed us to remain resilient and thrive through tumultuous times.",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "7c6m",
+          "data": {},
+          "text":
+              "In 2020, we were recognized by LinkedIn as one of the Top 10 Startups in Singapore. In 2022, we were featured in the top 20 of Nikkei-FT-Statista High-Growth Companies Asia-Pacific 2021 list. Moreover, we were also featured in the top 10 fastest-growing companies in Singapore by The Straits Times.",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "7pfm5",
+          "data": {},
+          "text": " ",
+          "type": "atomic",
+          "depth": 0,
+          "entityRanges": [
+            {"key": 0, "length": 1, "offset": 0}
+          ],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "eskav",
+          "data": {},
+          "text": "",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        }
+      ],
+      "entityMap": {
+        "0": {
+          "data": {
+            "src":
+                "https://s3-ap-southeast-1.amazonaws.com/glints-dashboard/content/e8cb7bcaea5e0bb94924736ed401c404.png",
+            "width": "auto",
+            "height": "auto"
+          },
+          "type": "EMBEDDED_LINK",
+          "mutability": "MUTABLE"
+        }
+      }
+    };
+
+    List<String> jsonString = _convertBlocksToString(jobDescription);
     for (var element in jsonString) {
       deve.log(element);
     }
@@ -233,7 +528,7 @@ class QuillDisplayExistingFile extends StatelessWidget {
 * Sentence 4
 * Sentence 5: A very long *sentence* to test how it will display on the screen\n
 
-A very long **sentence*** to test how it will display on the screen\n
+A very long **sentence** to test how it will display on the screen\n
 
 ### Job Description
 ${jsonString[0]}
@@ -249,10 +544,11 @@ ${jsonString[9]}
 ${jsonString[10]}
 ${jsonString[11]}
 ${jsonString[12]}
-${jsonString[13]}
 ${jsonString[14]}
 ${jsonString[15]}
 ${jsonString[16]}
+${jsonString[17]}
+${jsonString[18]}
 ''',
           styleSheet: MarkdownStyleSheet(
             h1: const TextStyle(
@@ -268,46 +564,53 @@ ${jsonString[16]}
   }
 }
 
-enum SentenceStype {
+enum _BlockStyle {
   unStyled,
   unorderedList,
   orderedList,
 }
 
-SentenceStype _getSentenceType(String type) {
+_BlockStyle _getSentenceType(String type) {
   if (type == 'ordered-list-item') {
-    return SentenceStype.orderedList;
+    return _BlockStyle.orderedList;
   } else if (type == 'unordered-list-item') {
-    return SentenceStype.unorderedList;
+    return _BlockStyle.unorderedList;
   } else {
-    return SentenceStype.unStyled;
+    return _BlockStyle.unStyled;
   }
 }
 
 List<String> _convertBlocksToString(Map<String, dynamic> json) {
   final blocks = json['blocks'] as List<Map>;
 
-  final List<String> blockStrings = [];
+  final List<String> content = [];
 
-  for (var block in blocks) {
-    final String tempBlock = _formatStyledText(block);
+  for (var i = 0; i < blocks.length; i++) {
+    final String curBlockContent = _addInlineStyle(blocks[i]);
+    final curStyle = _getSentenceType(blocks[i]['type']);
 
-    final getSentenceType = _getSentenceType(block['type']);
-
-    switch (getSentenceType) {
-      case SentenceStype.unStyled:
-        blockStrings.add('${tempBlock.toString()}\n');
-      case SentenceStype.unorderedList:
-        blockStrings.add('* ${tempBlock.toString()}\n');
-      case SentenceStype.orderedList:
-        blockStrings.add('* ${tempBlock.toString()}\n');
+    switch (curStyle) {
+      case _BlockStyle.unStyled:
+        content.add('${curBlockContent.toString()}\n');
+      case _BlockStyle.unorderedList:
+        content.add('* ${curBlockContent.toString()}\n');
+      case _BlockStyle.orderedList:
+        const String defaultOrder = '1. ';
+        content.add('$defaultOrder ${curBlockContent.toString()}\n');
     }
   }
 
-  return blockStrings;
+  final entityMap = json['entityMap'] as Map<dynamic, dynamic>;
+  if (entityMap.isEmpty) {
+    content.add('# entityMap is empty \n');
+  } else {
+    content.add(entityMap.toString());
+  }
+
+  return content;
 }
 
-String _formatStyledText(Map<dynamic, dynamic> block) {
+String _addInlineStyle(Map<dynamic, dynamic> block) {
   final String text = block['text'];
   final List<dynamic> inlineStyleRanges = block['inlineStyleRanges'];
 
@@ -316,18 +619,27 @@ String _formatStyledText(Map<dynamic, dynamic> block) {
     inlineStyleRanges
         .sort((a, b) => (a["offset"] as int).compareTo(b["offset"] as int));
   }
+  deve.log('reorder inlineStyleRange: ${inlineStyleRanges.toString()}');
 
-  // Merge styles with equal "offset" and "length"
+  // Merge styles with equal "offset"
   List<Map<String, dynamic>> newInlineStyleRanges = [];
   for (int i = 0; i < inlineStyleRanges.length; i++) {
     if (i < inlineStyleRanges.length - 1 &&
-        inlineStyleRanges[i]["offset"] == inlineStyleRanges[i + 1]["offset"] &&
-        inlineStyleRanges[i]["length"] == inlineStyleRanges[i + 1]["length"]) {
+        inlineStyleRanges[i]["offset"] == inlineStyleRanges[i + 1]["offset"]) {
+      late int newRangesLenght = 0;
+      final int firstInlineStyleLenght = inlineStyleRanges[i]["length"];
+      final int secondInlineStyleLenght = inlineStyleRanges[i + 1]["length"];
+
+      if (firstInlineStyleLenght >= secondInlineStyleLenght) {
+        newRangesLenght = firstInlineStyleLenght;
+      } else {
+        newRangesLenght = secondInlineStyleLenght;
+      }
       // Merge styles with equal "offset" and "length"
       newInlineStyleRanges.add({
         "style":
             "${inlineStyleRanges[i]["style"]} ${inlineStyleRanges[i + 1]["style"]}",
-        "length": inlineStyleRanges[i]["length"],
+        "length": newRangesLenght,
         "offset": inlineStyleRanges[i]["offset"],
       });
       // Skip the next element as it has been merged
@@ -337,8 +649,7 @@ String _formatStyledText(Map<dynamic, dynamic> block) {
       newInlineStyleRanges.add(inlineStyleRanges[i]);
     }
   }
-  deve.log('reorder inlineStyleRange: ${inlineStyleRanges.toString()}');
-  deve.log('reorder mergedList: ${newInlineStyleRanges.toString()}');
+  deve.log('newInlineStyleRanges: ${newInlineStyleRanges.toString()}');
 
   final StringBuffer formattedText = StringBuffer();
 
@@ -361,7 +672,7 @@ String _formatStyledText(Map<dynamic, dynamic> block) {
       styledText: styledText,
     );
 
-    if (!formattedText.toString().endsWith(' ')) {
+    if (!textFormatStyle.toString().endsWith(' ')) {
       textFormatStyle = '$textFormatStyle\n';
     }
 
@@ -388,13 +699,28 @@ String _textFormatStyle({
   if (style == 'BOLD' || style == 'UNDERLINE') {
     return '**$newStyledText**';
   } else if (style == 'ITALIC') {
-    return '*$newStyledText*\n';
+    return '*$newStyledText*';
   } else if (style == 'BOLD ITALIC' ||
       style == 'ITALIC BOLD' ||
       style == 'UNDERLINE ITALIC' ||
       style == 'ITALIC UNDERLINE') {
-    return '***$newStyledText***\n';
+    return '***$newStyledText***';
   } else {
     return newStyledText;
   }
 }
+
+// Implement [enityMap]:
+enum _EnityMapType {
+  image,
+  embeddedLink,
+}
+
+_EnityMapType _getEnityMapType(String type) {
+  if (type == 'IMAGE') {
+    return _EnityMapType.image;
+  } else {
+    return _EnityMapType.embeddedLink;
+  }
+}
+
