@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer' as deve show log;
 
 import 'package:flutter/material.dart';
@@ -199,7 +198,9 @@ class QuillDisplayExistingFile extends StatelessWidget {
           "type": "ordered-list-item",
           "depth": 0,
           "entityRanges": [],
-          "inlineStyleRanges": []
+          "inlineStyleRanges": [
+            {"style": "BOLD", "length": 6, "offset": 8}
+          ]
         }
       ],
       "entityMap": {}
@@ -209,25 +210,6 @@ class QuillDisplayExistingFile extends StatelessWidget {
     for (var element in jsonString) {
       deve.log(element);
     }
-
-    final jsonElement = {
-      "key": "95on6",
-      "data": {},
-      "text": "Find the optimal solutions for the problem.",
-      "type": "unordered-list-item",
-      "depth": 0,
-      "entityRanges": [],
-      "inlineStyleRanges": [
-        {"style": "BOLD", "length": 3, "offset": 5},
-        {"style": "BOLD", "length": 4, "offset": 31},
-        {"style": "UNDERLINE", "length": 9, "offset": 17},
-        // {"style": "ITALIC", "length": 4, "offset": 31}
-      ]
-    };
-
-    final formattedText = formatStyledText(jsonElement);
-    deve.log(formattedText);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Display Existing Text'),
@@ -251,13 +233,26 @@ class QuillDisplayExistingFile extends StatelessWidget {
 * Sentence 4
 * Sentence 5: A very long *sentence* to test how it will display on the screen\n
 
+A very long **sentence*** to test how it will display on the screen\n
+
 ### Job Description
 ${jsonString[0]}
 ${jsonString[1]}
 ${jsonString[2]}
-
-### Job Descript (formatted text)
-$formattedText
+${jsonString[3]}
+${jsonString[4]}
+${jsonString[5]}
+${jsonString[6]}
+${jsonString[7]}
+${jsonString[8]}
+${jsonString[9]}
+${jsonString[10]}
+${jsonString[11]}
+${jsonString[12]}
+${jsonString[13]}
+${jsonString[14]}
+${jsonString[15]}
+${jsonString[16]}
 ''',
           styleSheet: MarkdownStyleSheet(
             h1: const TextStyle(
@@ -273,55 +268,86 @@ $formattedText
   }
 }
 
+enum SentenceStype {
+  unStyled,
+  unorderedList,
+  orderedList,
+}
+
+SentenceStype _getSentenceType(String type) {
+  if (type == 'ordered-list-item') {
+    return SentenceStype.orderedList;
+  } else if (type == 'unordered-list-item') {
+    return SentenceStype.unorderedList;
+  } else {
+    return SentenceStype.unStyled;
+  }
+}
+
 List<String> _convertBlocksToString(Map<String, dynamic> json) {
   final blocks = json['blocks'] as List<Map>;
 
   final List<String> blockStrings = [];
 
   for (var block in blocks) {
-    final String tempBlock = block['text'];
-    if (tempBlock.toLowerCase().contains('job description')) {
-      continue;
-    }
+    final String tempBlock = _formatStyledText(block);
 
-    if (block['type'] != 'unordered-list-item') {
-      blockStrings.add('${tempBlock.toString()}\n');
-    } else {
-      blockStrings.add('* ${tempBlock.toString()}\n');
+    final getSentenceType = _getSentenceType(block['type']);
+
+    switch (getSentenceType) {
+      case SentenceStype.unStyled:
+        blockStrings.add('${tempBlock.toString()}\n');
+      case SentenceStype.unorderedList:
+        blockStrings.add('* ${tempBlock.toString()}\n');
+      case SentenceStype.orderedList:
+        blockStrings.add('* ${tempBlock.toString()}\n');
     }
   }
 
   return blockStrings;
 }
 
-String formatStyledText(Map<String, dynamic> jsonData) {
-  final String text = jsonData['text'];
-  final List<dynamic> inlineStyleRanges = jsonData['inlineStyleRanges'];
+String _formatStyledText(Map<dynamic, dynamic> block) {
+  final String text = block['text'];
+  final List<dynamic> inlineStyleRanges = block['inlineStyleRanges'];
 
   // Re-organize the inlineStyleRanges by offset:
   if (inlineStyleRanges.length > 1) {
     inlineStyleRanges
         .sort((a, b) => (a["offset"] as int).compareTo(b["offset"] as int));
   }
+
+  // Merge styles with equal "offset" and "length"
+  List<Map<String, dynamic>> newInlineStyleRanges = [];
+  for (int i = 0; i < inlineStyleRanges.length; i++) {
+    if (i < inlineStyleRanges.length - 1 &&
+        inlineStyleRanges[i]["offset"] == inlineStyleRanges[i + 1]["offset"] &&
+        inlineStyleRanges[i]["length"] == inlineStyleRanges[i + 1]["length"]) {
+      // Merge styles with equal "offset" and "length"
+      newInlineStyleRanges.add({
+        "style":
+            "${inlineStyleRanges[i]["style"]} ${inlineStyleRanges[i + 1]["style"]}",
+        "length": inlineStyleRanges[i]["length"],
+        "offset": inlineStyleRanges[i]["offset"],
+      });
+      // Skip the next element as it has been merged
+      i++;
+    } else {
+      // Add non-merged styles to the merged list
+      newInlineStyleRanges.add(inlineStyleRanges[i]);
+    }
+  }
   deve.log('reorder inlineStyleRange: ${inlineStyleRanges.toString()}');
+  deve.log('reorder mergedList: ${newInlineStyleRanges.toString()}');
 
   final StringBuffer formattedText = StringBuffer();
 
   int currentOffset = 0;
 
-  for (var styleRange in inlineStyleRanges) {
-    final String style = styleRange['style'];
+  for (var styleRange in newInlineStyleRanges) {
+    late String style = styleRange['style'];
     final int offset = styleRange['offset'];
     final int length = styleRange['length'];
-
-    late Map<String, Object> preStyleAndOffset = {
-      "style": '',
-      "offset": 0,
-    };
-    final Map<String, Object> curStyleAndOffset = {
-      "style": styleRange['style'],
-      "offset": styleRange['offset'],
-    };
 
     // Add the text before the style range
     formattedText.write(text.substring(currentOffset, offset));
@@ -330,17 +356,19 @@ String formatStyledText(Map<String, dynamic> jsonData) {
     final String styledText = text.substring(offset, offset + length);
 
     // Check style:
-    final textFormatStyle = _textFormatStyle(
+    var textFormatStyle = _textFormatStyle(
       style: style,
       styledText: styledText,
     );
+
+    if (!formattedText.toString().endsWith(' ')) {
+      textFormatStyle = '$textFormatStyle\n';
+    }
 
     // Add the [formatText]
     formattedText.write(textFormatStyle);
 
     currentOffset = offset + length;
-    preStyleAndOffset = curStyleAndOffset;
-    deve.log(preStyleAndOffset.toString());
   }
 
   // Add the remaining text after the last style range
@@ -354,12 +382,19 @@ String _textFormatStyle({
   required String style,
   required String styledText,
 }) {
+  final newStyledText = styledText.trimRight();
+
   // Markdown haven't supported underline yet
   if (style == 'BOLD' || style == 'UNDERLINE') {
-    return '**$styledText**';
+    return '**$newStyledText**';
   } else if (style == 'ITALIC') {
-    return '*$styledText*';
+    return '*$newStyledText*\n';
+  } else if (style == 'BOLD ITALIC' ||
+      style == 'ITALIC BOLD' ||
+      style == 'UNDERLINE ITALIC' ||
+      style == 'ITALIC UNDERLINE') {
+    return '***$newStyledText***\n';
   } else {
-    return styledText;
+    return newStyledText;
   }
 }
