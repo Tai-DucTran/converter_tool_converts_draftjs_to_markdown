@@ -3,6 +3,7 @@ import 'dart:developer' as deve show log;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class QuillDisplayExistingFile extends StatelessWidget {
   const QuillDisplayExistingFile({super.key});
@@ -430,7 +431,7 @@ class QuillDisplayExistingFile extends StatelessWidget {
           "key": "1jkll",
           "data": {},
           "text":
-              "Today, Glints is the most well-funded and well-capitalized startup in the talent recruitment space in Southeast Asia, with over US\$80M in total investments raised till date.",
+              "Today, Glints is the most well-funded and well-capitalized startup in the talent recruitment space in Southeast Asia, with over US80M in total investments raised till date.",
           "type": "unstyled",
           "depth": 0,
           "entityRanges": [],
@@ -485,6 +486,28 @@ class QuillDisplayExistingFile extends StatelessWidget {
           "depth": 0,
           "entityRanges": [],
           "inlineStyleRanges": []
+        },
+        {
+          "key": "8bcnh",
+          "data": {},
+          "text": " ",
+          "type": "atomic",
+          "depth": 0,
+          "entityRanges": [
+            {"key": 1, "length": 1, "offset": 0}
+          ],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "1mp77",
+          "data": {},
+          "text": "company website ",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [
+            {"key": 2, "length": 15, "offset": 0}
+          ],
+          "inlineStyleRanges": []
         }
       ],
       "entityMap": {
@@ -497,39 +520,34 @@ class QuillDisplayExistingFile extends StatelessWidget {
           },
           "type": "EMBEDDED_LINK",
           "mutability": "MUTABLE"
+        },
+        "1": {
+          "data": {
+            "src":
+                "https://images.glints.com/unsafe/glints-dashboard.s3.amazonaws.com/company-banner-pic/8bbe67bc895d4460a408810139ace6f4.jpg",
+            "width": "auto",
+            "height": "auto",
+            "alignment": "right"
+          },
+          "type": "IMAGE",
+          "mutability": "MUTABLE"
+        },
+        "2": {
+          "data": {
+            "url": "https://glints.com/vn",
+            "targetOption": "_blank",
+          },
+          "type": "LINK",
+          "mutability": "MUTABLE"
         }
       }
     };
 
-    List<String> jsonString = _convertBlocksToString(jobDescription);
+    List<String> jsonString = _convertBlocksToString(description);
     for (var element in jsonString) {
       deve.log(element);
     }
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Display Existing Text'),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(Icons.arrow_back),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Markdown(
-          data: '''
-# Heading h1
-## Heading h2
-*This text will be italic*
-* Sentence 1
-* Sentence 2
-* Sentence 3
-* Sentence 4
-* Sentence 5: A very long *sentence* to test how it will display on the screen\n
-
-A very long **sentence** to test how it will display on the screen\n
-
+    final markdownData = '''
 ### Job Description
 ${jsonString[0]}
 ${jsonString[1]}
@@ -544,20 +562,30 @@ ${jsonString[9]}
 ${jsonString[10]}
 ${jsonString[11]}
 ${jsonString[12]}
-${jsonString[14]}
-${jsonString[15]}
-${jsonString[16]}
-${jsonString[17]}
-${jsonString[18]}
-''',
+''';
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Display Existing Text'),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Markdown(
+          data: markdownData,
           styleSheet: MarkdownStyleSheet(
-            h1: const TextStyle(
-              color: Colors.yellowAccent,
-            ),
-            h3: const TextStyle(
-              color: Colors.blue,
-            ),
-          ),
+              h1: const TextStyle(
+                color: Colors.yellowAccent,
+              ),
+              h3: const TextStyle(
+                color: Colors.blue,
+              ),
+              a: const TextStyle(color: Colors.white)),
+          onTapLink: (text, url, title) => launchUrl(Uri.parse(url!)),
         ),
       ),
     );
@@ -568,6 +596,7 @@ enum _BlockStyle {
   unStyled,
   unorderedList,
   orderedList,
+  // atomic,
 }
 
 _BlockStyle _getSentenceType(String type) {
@@ -582,30 +611,46 @@ _BlockStyle _getSentenceType(String type) {
 
 List<String> _convertBlocksToString(Map<String, dynamic> json) {
   final blocks = json['blocks'] as List<Map>;
+  final entityMap = json['entityMap'] as Map;
 
   final List<String> content = [];
 
   for (var i = 0; i < blocks.length; i++) {
+    final entityRanges = blocks[i]['entityRanges'] as List;
     final String curBlockContent = _addInlineStyle(blocks[i]);
     final curStyle = _getSentenceType(blocks[i]['type']);
 
-    switch (curStyle) {
-      case _BlockStyle.unStyled:
-        content.add('${curBlockContent.toString()}\n');
-      case _BlockStyle.unorderedList:
-        content.add('* ${curBlockContent.toString()}\n');
-      case _BlockStyle.orderedList:
-        const String defaultOrder = '1. ';
-        content.add('$defaultOrder ${curBlockContent.toString()}\n');
+    if (entityRanges.isEmpty) {
+      switch (curStyle) {
+        case _BlockStyle.unStyled:
+          content.add('${curBlockContent.toString()}\n');
+        case _BlockStyle.unorderedList:
+          content.add('* ${curBlockContent.toString()}\n');
+        case _BlockStyle.orderedList:
+          const String defaultOrder = '1. ';
+          content.add('$defaultOrder ${curBlockContent.toString()}\n');
+      }
+    } else {
+      // Check keyEntity of Block, then link with entityMapKey
+      final keyBlockEntity = entityRanges[0]["key"];
+      final keyEnityMap = keyBlockEntity;
+      final Map entityMapBlock = entityMap["$keyEnityMap"];
+      final curEnityType = _getEnityMapType(entityMapBlock["type"]);
+
+      final data = entityMapBlock["data"];
+
+      switch (curEnityType) {
+        case _EnityMapType.image:
+          content.add('![](${data["src"]})');
+        case _EnityMapType.embeddedLink:
+          content.add('${data["src"]}');
+        case _EnityMapType.link:
+          content.add('[$curBlockContent](${data["url"]})');
+      }
     }
   }
 
-  final entityMap = json['entityMap'] as Map<dynamic, dynamic>;
-  if (entityMap.isEmpty) {
-    content.add('# entityMap is empty \n');
-  } else {
-    content.add(entityMap.toString());
-  }
+  content.add(entityMap.toString());
 
   return content;
 }
@@ -619,7 +664,6 @@ String _addInlineStyle(Map<dynamic, dynamic> block) {
     inlineStyleRanges
         .sort((a, b) => (a["offset"] as int).compareTo(b["offset"] as int));
   }
-  deve.log('reorder inlineStyleRange: ${inlineStyleRanges.toString()}');
 
   // Merge styles with equal "offset"
   List<Map<String, dynamic>> newInlineStyleRanges = [];
@@ -693,6 +737,10 @@ String _textFormatStyle({
   required String style,
   required String styledText,
 }) {
+  // Avoid to render empty text but having format
+  if (styledText == ' ') {
+    return '';
+  }
   final newStyledText = styledText.trimRight();
 
   // Markdown haven't supported underline yet
@@ -714,13 +762,15 @@ String _textFormatStyle({
 enum _EnityMapType {
   image,
   embeddedLink,
+  link,
 }
 
 _EnityMapType _getEnityMapType(String type) {
   if (type == 'IMAGE') {
     return _EnityMapType.image;
-  } else {
+  } else if (type == 'EMBEDDED_LINK') {
     return _EnityMapType.embeddedLink;
+  } else {
+    return _EnityMapType.link;
   }
 }
-
