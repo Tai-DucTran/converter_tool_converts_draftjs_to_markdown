@@ -543,26 +543,9 @@ class QuillDisplayExistingFile extends StatelessWidget {
       }
     };
 
-    List<String> jsonString = _convertBlocksToString(description);
-    for (var element in jsonString) {
-      deve.log(element);
-    }
-    final markdownData = '''
-### Job Description
-${jsonString[0]}
-${jsonString[1]}
-${jsonString[2]}
-${jsonString[3]}
-${jsonString[4]}
-${jsonString[5]}
-${jsonString[6]}
-${jsonString[7]}
-${jsonString[8]}
-${jsonString[9]}
-${jsonString[10]}
-${jsonString[11]}
-${jsonString[12]}
-''';
+    String markdownData = _convertBlocksToString(description);
+    deve.log(markdownData);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Display Existing Text'),
@@ -609,11 +592,11 @@ _BlockStyle _getSentenceType(String type) {
   }
 }
 
-List<String> _convertBlocksToString(Map<String, dynamic> json) {
+String _convertBlocksToString(Map<String, dynamic> json) {
   final blocks = json['blocks'] as List<Map>;
   final entityMap = json['entityMap'] as Map;
 
-  final List<String> content = [];
+  final List<String> listOfContent = [];
 
   for (var i = 0; i < blocks.length; i++) {
     final entityRanges = blocks[i]['entityRanges'] as List;
@@ -623,12 +606,12 @@ List<String> _convertBlocksToString(Map<String, dynamic> json) {
     if (entityRanges.isEmpty) {
       switch (curStyle) {
         case _BlockStyle.unStyled:
-          content.add('${curBlockContent.toString()}\n');
+          listOfContent.add('${curBlockContent.toString()}\n');
         case _BlockStyle.unorderedList:
-          content.add('* ${curBlockContent.toString()}\n');
+          listOfContent.add('* ${curBlockContent.toString()}\n');
         case _BlockStyle.orderedList:
           const String defaultOrder = '1. ';
-          content.add('$defaultOrder ${curBlockContent.toString()}\n');
+          listOfContent.add('$defaultOrder ${curBlockContent.toString()}\n');
       }
     } else {
       // Check keyEntity of Block, then link with entityMapKey
@@ -641,16 +624,16 @@ List<String> _convertBlocksToString(Map<String, dynamic> json) {
 
       switch (curEnityType) {
         case _EnityMapType.image:
-          content.add('![](${data["src"]})');
+          listOfContent.add('![](${data["src"]})');
         case _EnityMapType.embeddedLink:
-          content.add('${data["src"]}');
+          listOfContent.add('${data["src"]}');
         case _EnityMapType.link:
-          content.add('[$curBlockContent](${data["url"]})');
+          listOfContent.add('[$curBlockContent](${data["url"]})');
       }
     }
   }
 
-  content.add(entityMap.toString());
+  final content = listOfContent.join('\n');
 
   return content;
 }
@@ -659,13 +642,13 @@ String _addInlineStyle(Map<dynamic, dynamic> block) {
   final String text = block['text'];
   final List<dynamic> inlineStyleRanges = block['inlineStyleRanges'];
 
-  // Re-organize the inlineStyleRanges by offset:
+  // Reorganize the inlineStyleRanges by increasing offset:
   if (inlineStyleRanges.length > 1) {
     inlineStyleRanges
         .sort((a, b) => (a["offset"] as int).compareTo(b["offset"] as int));
   }
 
-  // Merge styles with equal "offset"
+  // Merge styles with equal "offset" to avoid the conflict
   List<Map<String, dynamic>> newInlineStyleRanges = [];
   for (int i = 0; i < inlineStyleRanges.length; i++) {
     if (i < inlineStyleRanges.length - 1 &&
@@ -679,14 +662,14 @@ String _addInlineStyle(Map<dynamic, dynamic> block) {
       } else {
         newRangesLenght = secondInlineStyleLenght;
       }
-      // Merge styles with equal "offset" and "length"
+      // Merge styles if those equal "offset" and "length"
       newInlineStyleRanges.add({
         "style":
             "${inlineStyleRanges[i]["style"]} ${inlineStyleRanges[i + 1]["style"]}",
         "length": newRangesLenght,
         "offset": inlineStyleRanges[i]["offset"],
       });
-      // Skip the next element as it has been merged
+
       i++;
     } else {
       // Add non-merged styles to the merged list
