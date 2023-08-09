@@ -1,12 +1,10 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:developer' as deve show log;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:learn_quill_flutter/utills/converter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class QuillDisplayExistingFile extends StatelessWidget {
-  const QuillDisplayExistingFile({super.key});
+class MarkDownDisplay extends StatelessWidget {
+  const MarkDownDisplay({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -543,8 +541,9 @@ class QuillDisplayExistingFile extends StatelessWidget {
       }
     };
 
-    String markdownData = _convertBlocksToString(description);
-    deve.log(markdownData);
+    String markdownDataJob = convertBlocksToString(jobDescription);
+    String markdownDataCompany = convertBlocksToString(description);
+    String markdownDataCulture = convertBlocksToString(cultureJson);
 
     return Scaffold(
       appBar: AppBar(
@@ -559,7 +558,11 @@ class QuillDisplayExistingFile extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Markdown(
-          data: markdownData,
+          data: '''
+$markdownDataJob
+$markdownDataCompany
+$markdownDataCulture
+''',
           styleSheet: MarkdownStyleSheet(
               h1: const TextStyle(
                 color: Colors.yellowAccent,
@@ -572,188 +575,5 @@ class QuillDisplayExistingFile extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-enum _BlockStyle {
-  unStyled,
-  unorderedList,
-  orderedList,
-  // atomic,
-}
-
-_BlockStyle _getSentenceType(String type) {
-  if (type == 'ordered-list-item') {
-    return _BlockStyle.orderedList;
-  } else if (type == 'unordered-list-item') {
-    return _BlockStyle.unorderedList;
-  } else {
-    return _BlockStyle.unStyled;
-  }
-}
-
-String _convertBlocksToString(Map<String, dynamic> json) {
-  final blocks = json['blocks'] as List<Map>;
-  final entityMap = json['entityMap'] as Map;
-
-  final List<String> listOfContent = [];
-
-  for (var i = 0; i < blocks.length; i++) {
-    final entityRanges = blocks[i]['entityRanges'] as List;
-    final String curBlockContent = _addInlineStyle(blocks[i]);
-    final curStyle = _getSentenceType(blocks[i]['type']);
-
-    if (entityRanges.isEmpty) {
-      switch (curStyle) {
-        case _BlockStyle.unStyled:
-          listOfContent.add('${curBlockContent.toString()}\n');
-        case _BlockStyle.unorderedList:
-          listOfContent.add('* ${curBlockContent.toString()}\n');
-        case _BlockStyle.orderedList:
-          const String defaultOrder = '1. ';
-          listOfContent.add('$defaultOrder ${curBlockContent.toString()}\n');
-      }
-    } else {
-      // Check keyEntity of Block, then link with entityMapKey
-      final keyBlockEntity = entityRanges[0]["key"];
-      final keyEnityMap = keyBlockEntity;
-      final Map entityMapBlock = entityMap["$keyEnityMap"];
-      final curEnityType = _getEnityMapType(entityMapBlock["type"]);
-
-      final data = entityMapBlock["data"];
-
-      switch (curEnityType) {
-        case _EnityMapType.image:
-          listOfContent.add('![](${data["src"]})');
-        case _EnityMapType.embeddedLink:
-          listOfContent.add('${data["src"]}');
-        case _EnityMapType.link:
-          listOfContent.add('[$curBlockContent](${data["url"]})');
-      }
-    }
-  }
-
-  final content = listOfContent.join('\n');
-
-  return content;
-}
-
-String _addInlineStyle(Map<dynamic, dynamic> block) {
-  final String text = block['text'];
-  final List<dynamic> inlineStyleRanges = block['inlineStyleRanges'];
-
-  // Reorganize the inlineStyleRanges by increasing offset:
-  if (inlineStyleRanges.length > 1) {
-    inlineStyleRanges
-        .sort((a, b) => (a["offset"] as int).compareTo(b["offset"] as int));
-  }
-
-  // Merge styles with equal "offset" to avoid the conflict
-  List<Map<String, dynamic>> newInlineStyleRanges = [];
-  for (int i = 0; i < inlineStyleRanges.length; i++) {
-    if (i < inlineStyleRanges.length - 1 &&
-        inlineStyleRanges[i]["offset"] == inlineStyleRanges[i + 1]["offset"]) {
-      late int newRangesLenght = 0;
-      final int firstInlineStyleLenght = inlineStyleRanges[i]["length"];
-      final int secondInlineStyleLenght = inlineStyleRanges[i + 1]["length"];
-
-      if (firstInlineStyleLenght >= secondInlineStyleLenght) {
-        newRangesLenght = firstInlineStyleLenght;
-      } else {
-        newRangesLenght = secondInlineStyleLenght;
-      }
-      // Merge styles if those equal "offset" and "length"
-      newInlineStyleRanges.add({
-        "style":
-            "${inlineStyleRanges[i]["style"]} ${inlineStyleRanges[i + 1]["style"]}",
-        "length": newRangesLenght,
-        "offset": inlineStyleRanges[i]["offset"],
-      });
-
-      i++;
-    } else {
-      // Add non-merged styles to the merged list
-      newInlineStyleRanges.add(inlineStyleRanges[i]);
-    }
-  }
-  deve.log('newInlineStyleRanges: ${newInlineStyleRanges.toString()}');
-
-  final StringBuffer formattedText = StringBuffer();
-
-  int currentOffset = 0;
-
-  for (var styleRange in newInlineStyleRanges) {
-    late String style = styleRange['style'];
-    final int offset = styleRange['offset'];
-    final int length = styleRange['length'];
-
-    // Add the text before the style range
-    formattedText.write(text.substring(currentOffset, offset));
-
-    // Apply the style to the specified range of text
-    final String styledText = text.substring(offset, offset + length);
-
-    // Check style:
-    var textFormatStyle = _textFormatStyle(
-      style: style,
-      styledText: styledText,
-    );
-
-    if (!textFormatStyle.toString().endsWith(' ')) {
-      textFormatStyle = '$textFormatStyle\n';
-    }
-
-    // Add the [formatText]
-    formattedText.write(textFormatStyle);
-
-    currentOffset = offset + length;
-  }
-
-  // Add the remaining text after the last style range
-  formattedText.write(text.substring(currentOffset));
-
-  return formattedText.toString();
-  // return inlineStyleRanges.toString();
-}
-
-String _textFormatStyle({
-  required String style,
-  required String styledText,
-}) {
-  // Avoid to render empty text but having format
-  if (styledText == ' ') {
-    return '';
-  }
-  final newStyledText = styledText.trimRight();
-
-  // Markdown haven't supported underline yet
-  if (style == 'BOLD' || style == 'UNDERLINE') {
-    return '**$newStyledText**';
-  } else if (style == 'ITALIC') {
-    return '*$newStyledText*';
-  } else if (style == 'BOLD ITALIC' ||
-      style == 'ITALIC BOLD' ||
-      style == 'UNDERLINE ITALIC' ||
-      style == 'ITALIC UNDERLINE') {
-    return '***$newStyledText***';
-  } else {
-    return newStyledText;
-  }
-}
-
-// Implement [enityMap]:
-enum _EnityMapType {
-  image,
-  embeddedLink,
-  link,
-}
-
-_EnityMapType _getEnityMapType(String type) {
-  if (type == 'IMAGE') {
-    return _EnityMapType.image;
-  } else if (type == 'EMBEDDED_LINK') {
-    return _EnityMapType.embeddedLink;
-  } else {
-    return _EnityMapType.link;
   }
 }

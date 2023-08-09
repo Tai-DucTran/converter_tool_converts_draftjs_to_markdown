@@ -12,7 +12,7 @@ void main() {
     home: const HomePage(),
     routes: {
       quillEditorRoute: (context) => const QuillEditorView(),
-      quillDisplayExistingFile: (context) => const QuillDisplayExistingFile(),
+      quillDisplayExistingFile: (context) => const MarkDownDisplay(),
       optimizeMarkdown: (context) => const OptimizeMarkdown(),
     },
   ));
