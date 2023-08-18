@@ -1,7 +1,10 @@
+import 'dart:developer' as deve show log;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:learn_quill_flutter/utills/converter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:email_validator/email_validator.dart';
 
 class MarkDownDisplay extends StatelessWidget {
   const MarkDownDisplay({super.key});
@@ -11,196 +14,495 @@ class MarkDownDisplay extends StatelessWidget {
     final jobDescription = {
       "blocks": [
         {
-          "key": "dfm6j",
+          "key": "capve",
           "data": {},
-          "text": "Job description",
+          "text":
+              "WEALLNET is a brand new experience agency that exists to reimagine what an experience can be. We do that by pushing the boundaries of what’s possible in every format — virtual, live or hybrid. Born out of smart insights and built creatively with a content-first approach, our vision is imaginative and engaging, innovative beyond expectation, and flawlessly executed. Each and every day we are driven to do one thing: Live Extraordinary.  ",
           "type": "unstyled",
           "depth": 0,
           "entityRanges": [],
           "inlineStyleRanges": [
-            {"style": "BOLD", "length": 15, "offset": 0}
+            {"style": "BOLD", "length": 8, "offset": 0},
+            {"style": "BOLD", "length": 4, "offset": 418},
+            {"style": "BOLD", "length": 14, "offset": 423},
+            {"style": "ITALIC", "length": 4, "offset": 418},
+            {"style": "ITALIC", "length": 15, "offset": 423},
+            {"style": "UNDERLINE", "length": 13, "offset": 423}
           ]
         },
         {
-          "key": "6o7kf",
+          "key": "17o1n",
           "data": {},
           "text":
-              "Join the Mobile development team and implement iOS and Android applications according to customer's requirements.",
-          "type": "unordered-list-item",
-          "depth": 0,
-          "entityRanges": [],
-          "inlineStyleRanges": [
-            {"style": "UNDERLINE", "length": 15, "offset": 47},
-            {"style": "ITALIC", "length": 15, "offset": 47}
-          ]
-        },
-        {
-          "key": "c9037",
-          "data": {},
-          "text":
-              "Develop and maintain the application, fix bugs, and design new functions as required.",
-          "type": "unordered-list-item",
+              "At the core of our agency is our people - a dedicated team of engineers, creative innovators, world-class futurists, operational experts and business partners. And we’re looking for motivated, ambitious team players to join us.",
+          "type": "unstyled",
           "depth": 0,
           "entityRanges": [],
           "inlineStyleRanges": []
         },
         {
-          "key": "20ad3",
+          "key": "6q96s",
           "data": {},
-          "text": "Maintain the highest code quality",
-          "type": "unordered-list-item",
-          "depth": 0,
-          "entityRanges": [],
-          "inlineStyleRanges": [
-            {"style": "BOLD", "length": 12, "offset": 13}
-          ]
-        },
-        {
-          "key": "95on6",
-          "data": {},
-          "text": "Find the optimal solutions for the problem.",
-          "type": "unordered-list-item",
-          "depth": 0,
-          "entityRanges": [],
-          "inlineStyleRanges": [
-            {"style": "BOLD", "length": 3, "offset": 5},
-            {"style": "BOLD", "length": 4, "offset": 31},
-            {"style": "UNDERLINE", "length": 9, "offset": 17},
-            {"style": "ITALIC", "length": 3, "offset": 31}
-          ]
-        },
-        {
-          "key": "etql0",
-          "data": {},
-          "text": "Your skills and experience",
+          "text":
+              "Our Senior Creatives are thinkers, makers and storytellers that use design/art to bring ideas to life. They lead projects into uncharted creative territories and synthesize new outcomes. They’re design fundamentalists that approach projects with both rational and innovative mindsets. They know that the only constant is change and embrace the unknown with maturity, empathy and tenacity.\n \nAs a Senior Creative (Art), you’ll be responsible for leading strategic and creative thinking across large systematic projects, utilsing new technologies to create unique experiences. We are looking for a mix of conceptual thinking, innovation, design craft and fearless leadership to create meaningful and memorable work.\n \n Here’s what you should know if you want to be a Senior Creative at WAN:\n \n You are:",
           "type": "unstyled",
           "depth": 0,
           "entityRanges": [],
           "inlineStyleRanges": [
-            {"style": "BOLD", "length": 26, "offset": 0}
+            {"style": "BOLD", "length": 16, "offset": 4},
+            {"style": "BOLD", "length": 3, "offset": 784},
+            {"style": "BOLD", "length": 8, "offset": 792},
+            {"style": "ITALIC", "length": 9, "offset": 791},
+            {"style": "UNDERLINE", "length": 9, "offset": 791}
           ]
         },
         {
-          "key": "ksoq",
+          "key": "1rs98",
           "data": {},
-          "text": "Graduated from College - University or IT training schools;",
+          "text": "A natural leader, strategic and conceptual thinker.",
           "type": "unordered-list-item",
           "depth": 0,
           "entityRanges": [],
-          "inlineStyleRanges": [
-            {"style": "BOLD", "length": 12, "offset": 10},
-            {"style": "UNDERLINE", "length": 12, "offset": 10}
-          ]
+          "inlineStyleRanges": []
         },
         {
-          "key": "5u2lj",
+          "key": "e1ai6",
           "data": {},
           "text":
-              "Minimum 1-year experience with Flutter application programming;",
+              "Not just a stellar Designer but enjoy leading and mentoring those around you.",
           "type": "unordered-list-item",
           "depth": 0,
           "entityRanges": [],
           "inlineStyleRanges": []
         },
         {
-          "key": "1a9c0",
-          "data": {},
-          "text": "Experience with Flutter (Dart);",
-          "type": "unordered-list-item",
-          "depth": 0,
-          "entityRanges": [],
-          "inlineStyleRanges": []
-        },
-        {
-          "key": "sc5c",
+          "key": "b15ap",
           "data": {},
           "text":
-              "Progressive, eager to learn, and willing to listen to suggestions for improvement;",
+              "A world-class Art Director with impeccable craft, comfortably and consistently superb in your thinking and execution across a range of visual styles and mediums.",
           "type": "unordered-list-item",
           "depth": 0,
           "entityRanges": [],
           "inlineStyleRanges": []
         },
         {
-          "key": "6nnmj",
+          "key": "8fjdl",
           "data": {},
-          "text": "Why you'll love working here.",
+          "text":
+              "Able to define strategic and creative points of view on systematic thinking, platform innovation, storytelling and brand.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "48ik",
+          "data": {},
+          "text":
+              "A leader and collaborator. You will lead and work closely with other disciplines and have a broad understanding of design that goes beyond Visual Design.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "dp67q",
+          "data": {},
+          "text":
+              "A master of your craft who can be hands-on when needed. You lead by example and inspire with your passion.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "2l94e",
+          "data": {},
+          "text":
+              "Able to build strong relationships with colleagues and clients alike.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "66mh6",
+          "data": {},
+          "text":
+              "Proactive and positive in your approach to work and those around you.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "dtqnr",
+          "data": {},
+          "text": "On any given day:",
           "type": "unstyled",
           "depth": 0,
           "entityRanges": [],
           "inlineStyleRanges": [
-            {"style": "BOLD", "length": 28, "offset": 0}
+            {"style": "BOLD", "length": 17, "offset": 0},
+            {"style": "ITALIC", "length": 17, "offset": 0},
+            {"style": "UNDERLINE", "length": 17, "offset": 0}
           ]
         },
         {
-          "key": "4miiv",
+          "key": "8orc7",
           "data": {},
-          "text": "13th month salary.",
-          "type": "ordered-list-item",
+          "text":
+              "Create digital products, design systems and narratives grounded in strategic thinking.",
+          "type": "unordered-list-item",
           "depth": 0,
           "entityRanges": [],
           "inlineStyleRanges": []
         },
         {
-          "key": "5buiv",
+          "key": "5vn8d",
           "data": {},
-          "text": "Bonus KPI/Performance.",
-          "type": "ordered-list-item",
+          "text":
+              "Structure narratives for client presentations and push systematic design work to drive impact and creative edge.",
+          "type": "unordered-list-item",
           "depth": 0,
           "entityRanges": [],
           "inlineStyleRanges": []
         },
         {
-          "key": "6mb4k",
+          "key": "f24sh",
           "data": {},
-          "text": "Extremely open working environment.",
-          "type": "ordered-list-item",
+          "text":
+              "Work with C-suite leaders and visionaries to transform brands.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "dt73n",
+          "data": {},
+          "text":
+              "Define business requirements, opportunities and translate strategic insights into customer-facing experiences.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "9pid0",
+          "data": {},
+          "text":
+              "Lead, empower and inspire teams to create best-in-class experiences.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "7ksll",
+          "data": {},
+          "text":
+              "Mentor design talent across projects, providing clear direction and actionable feedback.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "9mocp",
+          "data": {},
+          "text":
+              "Concept and collaborate with Strategy, Visual Design, Copy, UX and Tech to push project objectives.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "fiv9b",
+          "data": {},
+          "text":
+              "Provide direction in matters related to visual design, including user experience, user interface, product and service design.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "c2l48",
+          "data": {},
+          "text": "Identify creative opportunities for business growth.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "fn1ut",
+          "data": {},
+          "text": "You’re the right fit if you:",
+          "type": "unstyled",
           "depth": 0,
           "entityRanges": [],
           "inlineStyleRanges": [
-            {"style": "BOLD", "length": 35, "offset": 0}
+            {"style": "BOLD", "length": 28, "offset": 0},
+            {"style": "UNDERLINE", "length": 28, "offset": 0},
+            {"style": "ITALIC", "length": 28, "offset": 0}
           ]
         },
         {
-          "key": "33bi8",
+          "key": "3qkev",
           "data": {},
-          "text": "Work with all the newest technologies.",
-          "type": "ordered-list-item",
+          "text":
+              "Are curious and look beyond the immediate ask to concept innovative solutions.",
+          "type": "unordered-list-item",
           "depth": 0,
           "entityRanges": [],
           "inlineStyleRanges": []
         },
         {
-          "key": "n4f0",
+          "key": "77msm",
           "data": {},
-          "text": "Career orientation support.",
-          "type": "ordered-list-item",
-          "depth": 0,
-          "entityRanges": [],
-          "inlineStyleRanges": [
-            {"style": "UNDERLINE", "length": 18, "offset": 0},
-            {"style": "BOLD", "length": 18, "offset": 0}
-          ]
-        },
-        {
-          "key": "e1g9h",
-          "data": {},
-          "text": "Reward holidays / Tet.",
-          "type": "ordered-list-item",
+          "text":
+              "Have a positive attitude that fosters team camaraderie and believe that greatness can happen only when people with different skills and perspectives work together.",
+          "type": "unordered-list-item",
           "depth": 0,
           "entityRanges": [],
           "inlineStyleRanges": []
         },
         {
-          "key": "67env",
+          "key": "aic95",
           "data": {},
-          "text": "Holiday events.",
-          "type": "ordered-list-item",
+          "text":
+              "Persevere despite obstacles and have the ability to adapt on the fly.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "a6u5h",
+          "data": {},
+          "text":
+              "Are able to lead multiple projects and delegate work effectively.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "798p6",
+          "data": {},
+          "text":
+              "Have strong leadership skills, and enjoys mentoring and fostering growth of junior design talent.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "5hrkk",
+          "data": {},
+          "text":
+              "Have impeccable design craft, conceptual thinking and creative flair.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "92m24",
+          "data": {},
+          "text":
+              "Are able to think, make and effectively communicate ideas and outputs to colleagues and clients.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "cooq7",
+          "data": {},
+          "text":
+              "Are relentlessly focused on crafting meaning and memorable experiences that add real value to people’s lives and measurably move businesses forward.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "6ktvh",
+          "data": {},
+          "text":
+              "Are comfortable collaborating with people from different creative disciplines and teams.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "7moee",
+          "data": {},
+          "text":
+              "Have a proven track record in both product and systematic work.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "c5jki",
+          "data": {},
+          "text":
+              "Have an active creative and cultural life with the ability to form unique POVs.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "7io1b",
+          "data": {},
+          "text":
+              "Are able to create and craft award winning and peer envy work.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "fbn1s",
+          "data": {},
+          "text": "You bring:",
+          "type": "unstyled",
           "depth": 0,
           "entityRanges": [],
           "inlineStyleRanges": [
-            {"style": "BOLD", "length": 6, "offset": 8}
+            {"style": "BOLD", "length": 10, "offset": 0},
+            {"style": "ITALIC", "length": 10, "offset": 0},
+            {"style": "UNDERLINE", "length": 10, "offset": 0}
           ]
+        },
+        {
+          "key": "2ri1n",
+          "data": {},
+          "text": "10+ years of experience in Product/Service/Visual Design",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "1qq8c",
+          "data": {},
+          "text":
+              "A proven track record of leading clients, projects and teams across multiple industries",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "6it60",
+          "data": {},
+          "text":
+              "The knowledge of what good strategy and design systems look like while being able to zoom out and see the broader picture, while connecting the dots to create a cohesive overall experience",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "345jr",
+          "data": {},
+          "text":
+              "The ability to inspire, line manage and mentor Visual Designers",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "5997d",
+          "data": {},
+          "text":
+              "Mastery in design tools, presentation and prototyping including Figma, Sketch, Adobe Creative Suite, InVision, Principle, Keynote and Google Slides",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "7ipqs",
+          "data": {},
+          "text": "What kind of person are you?",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": [
+            {"style": "BOLD", "length": 28, "offset": 0},
+            {"style": "ITALIC", "length": 28, "offset": 0},
+            {"style": "UNDERLINE", "length": 28, "offset": 0}
+          ]
+        },
+        {
+          "key": "4rhbc",
+          "data": {},
+          "text":
+              "You are a go-getter! You have an ‘impossible is nothing’ attitude.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "2vd7g",
+          "data": {},
+          "text": "You also have a warm positive attitude",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "d1t39",
+          "data": {},
+          "text":
+              "Good people skills for the difficult moments as well as the easy ones.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "eg6bm",
+          "data": {},
+          "text":
+              "You have proven understanding of our business or very similar ones.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "32pi0",
+          "data": {},
+          "text":
+              "You can often foresee upcoming issues and can discuss fairly with your CEO.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
+        },
+        {
+          "key": "342l7",
+          "data": {},
+          "text":
+              "You are unfazed by a little pressure and enjoy the energy of a team.  ",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": []
         }
       ],
       "entityMap": {}
