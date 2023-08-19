@@ -3,6 +3,7 @@ import 'dart:developer' as deve show log;
 // - It will take json data and split [blocks] to small [block]s
 // - Depending on the block's [style] and [entityRanges], it constructs the appropriate Markdown-style formatting for each block's content.
 // - If the block has entity ranges (such as links or images), it retrieves the entity map data and formats the content accordingly.
+// _ If [_addInlineStyle] is error, will return text without any format style
 
 //* [_addInlineStyle]:
 // - processes inline style ranges within a block
@@ -73,8 +74,15 @@ String convertBlocksToString(Map<String, dynamic> json) {
     final curBlock = blocks[i] as Map<String, dynamic>;
     final entityRanges = (blocks[i] as Map)['entityRanges'] as List;
     final blockType = (blocks[i] as Map)['type'] as String;
-    final curBlockContent = _addInlineStyle(curBlock);
     final curStyle = _getSentenceType(blockType);
+
+    //* If [_addInlineStyle] return (error), [curBlockContent] will return as text without any format style
+    String curBlockContent;
+    try {
+      curBlockContent = _addInlineStyle(curBlock);
+    } catch (e) {
+      curBlockContent = curBlock['text'] as String;
+    }
 
     if (entityRanges.isEmpty) {
       switch (curStyle) {
@@ -107,18 +115,17 @@ String convertBlocksToString(Map<String, dynamic> json) {
   }
 
   final content = listOfContent.join('\n');
-
-  deve.log('content: $content');
-
   return content;
 }
 
 String _addInlineStyle(Map<String, dynamic> block) {
   final text = block['text'] as String;
   final inlineStyleRanges = block['inlineStyleRanges'] as List;
+  final inlineStyleRangesLength = inlineStyleRanges.length;
+  final newInlineStyleRanges = <Map<String, dynamic>>[];
 
   // Reorganize the inlineStyleRanges by increasing offset:
-  if (inlineStyleRanges.length > 1) {
+  if (inlineStyleRangesLength > 1) {
     inlineStyleRanges.sort(
       (a, b) =>
           ((a as Map)['offset'] as int).compareTo((b as Map)['offset'] as int),
@@ -128,13 +135,15 @@ String _addInlineStyle(Map<String, dynamic> block) {
   deve.log('Reorganize inlineStyleRanges: $inlineStyleRanges');
 
   // Merge styles with equal "offset" to avoid the conflict
-  final newInlineStyleRanges = <Map<String, dynamic>>[];
-  for (var i = 0; i < inlineStyleRanges.length; i++) {
-    if (i < inlineStyleRanges.length - 1) {
+
+  for (var i = 0; i < inlineStyleRangesLength; i++) {
+    // Check if [inlineStyleRanges] is greater than or equal 2
+    if (i < inlineStyleRangesLength - 1) {
       final curInlineStyleRanges = inlineStyleRanges[i] as Map<String, dynamic>;
       final nexInlineStyleRanges =
           inlineStyleRanges[i + 1] as Map<String, dynamic>;
 
+      // Check if current [offset] is equal next [offset]
       if (curInlineStyleRanges['offset'] == nexInlineStyleRanges['offset']) {
         late var newRangesLenght = 0;
         final firstInlineStyleLenght = curInlineStyleRanges['length'] as int;
@@ -152,27 +161,33 @@ String _addInlineStyle(Map<String, dynamic> block) {
           'length': newRangesLenght,
           'offset': curInlineStyleRanges['offset'],
         });
-
-        i++;
+      } else {
+        newInlineStyleRanges.add(inlineStyleRanges[i] as Map<String, dynamic>);
       }
     } else {
       // Add non-merged styles to the merged list
       final curInlineStyleRanges = inlineStyleRanges[i] as Map<String, dynamic>;
       newInlineStyleRanges.add(curInlineStyleRanges);
+
+      deve.log('newInlineStyleRanges non-merged styles: $newInlineStyleRanges');
     }
 
+    i++;
     deve.log('newInlineStyleRanges: $newInlineStyleRanges');
   }
 
   //* A. Avoid the conflict with complex inlineStyleRanges and simplize these words be united style
   if (newInlineStyleRanges.length >= 2) {
-    for (var i = 0; i < newInlineStyleRanges.length; i++) {
+    var i = 0;
+    while (i < newInlineStyleRanges.length - 1) {
       if (_doesBelong(newInlineStyleRanges[i], newInlineStyleRanges[i + 1])) {
         newInlineStyleRanges.removeAt(i + 1);
+      } else {
+        i++;
       }
-      i++;
     }
   }
+
   deve.log('A. Avoid conflict newInlineStyleRanges: $newInlineStyleRanges');
 
   final formattedText = StringBuffer();
