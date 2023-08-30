@@ -1,4 +1,3 @@
-import 'dart:developer' as deve show log;
 //* [convertBlocksToString]:
 // - It will take json data and split [blocks] to small [block]s
 // - Depending on the block's [style] and [entityRanges], it constructs the appropriate Markdown-style formatting for each block's content.
@@ -132,8 +131,6 @@ String _addInlineStyle(Map<String, dynamic> block) {
     );
   }
 
-  deve.log('Reorganize inlineStyleRanges: $inlineStyleRanges');
-
   // Merge styles with equal "offset" to avoid the conflict
 
   for (var i = 0; i < inlineStyleRangesLength; i++) {
@@ -168,12 +165,8 @@ String _addInlineStyle(Map<String, dynamic> block) {
       // Add non-merged styles to the merged list
       final curInlineStyleRanges = inlineStyleRanges[i] as Map<String, dynamic>;
       newInlineStyleRanges.add(curInlineStyleRanges);
-
-      deve.log('newInlineStyleRanges non-merged styles: $newInlineStyleRanges');
     }
-
     i++;
-    deve.log('newInlineStyleRanges: $newInlineStyleRanges');
   }
 
   //* A. Avoid the conflict with complex inlineStyleRanges and simplize these words be united style
@@ -187,8 +180,6 @@ String _addInlineStyle(Map<String, dynamic> block) {
       }
     }
   }
-
-  deve.log('A. Avoid conflict newInlineStyleRanges: $newInlineStyleRanges');
 
   final formattedText = StringBuffer();
 
