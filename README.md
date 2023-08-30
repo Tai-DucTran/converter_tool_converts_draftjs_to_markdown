@@ -1,16 +1,19 @@
-# learn_quill_flutter
+# converter_converts_draftjs_to_markdown
 
 A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project addresses the issue that occurred with the 'draft_view' package, which is no longer maintainable or updatable.
 
-A few resources to get you started if this is your first Flutter project:
+Our company's project utilized the 'draft_view' package to display an article. However, we encountered an issue related to rendering unordered and ordered lists within sentences:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Issue:
+    - If a sentence begins with a bullet point or ordered list number, and it also includes formatted text styles such as UNDERLINE, BOLD, or ITALIC, 'draft_view' renders it incorrectly. It treats them as normal sentences without adding any bullet points or ordered list numbers.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+To solve this problem, I implemented a custom converter myself and also incorporated the 'markdown' package to assist in this process.
+
+Please note:
+
+    - The 'markdown' package does not yet support UNDERLINE formatting. In my implementation, I applied a workaround to convert UNDERLINE style to BOLD.
+    - While this implementation still requires improvement and might not be the optimal solution, it successfully resolved our team's problem.
