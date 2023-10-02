@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:learn_quill_flutter/utills/converter.dart';
+import 'package:learn_quill_flutter/converter/converter.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 class MarkDownDisplay extends StatelessWidget {
   const MarkDownDisplay({super.key});
 
@@ -24,6 +25,20 @@ class MarkDownDisplay extends StatelessWidget {
             {"style": "ITALIC", "length": 4, "offset": 418},
             {"style": "ITALIC", "length": 15, "offset": 423},
             {"style": "UNDERLINE", "length": 13, "offset": 423}
+          ]
+        },
+        {
+          "key": "95on6",
+          "data": {},
+          "text": "Find the optimal solutions for the problem.",
+          "type": "unordered-list-item",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": [
+            {"style": "BOLD", "length": 3, "offset": 5},
+            {"style": "BOLD", "length": 4, "offset": 31},
+            {"style": "UNDERLINE", "length": 9, "offset": 17},
+            {"style": "ITALIC", "length": 4, "offset": 31}
           ]
         },
         {
@@ -389,8 +404,8 @@ class MarkDownDisplay extends StatelessWidget {
     };
 
     String markdownDataJob = convertBlocksToString(jobDescription);
-    // String markdownDataCompany = convertBlocksToString(description);
-    // String markdownDataCulture = convertBlocksToString(cultureJson);
+    String markdownDataCompany = convertBlocksToString(description);
+    String markdownDataCulture = convertBlocksToString(cultureJson);
 
     return Scaffold(
       appBar: AppBar(
