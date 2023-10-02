@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "/Users/taiductran/Software-Projects/Personal/learn_quill_flutter/linux"
+    "cmake.sourceDirectory": "/Users/taiductran/Software-Projects/Personal/learn_quill_flutter/linux",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

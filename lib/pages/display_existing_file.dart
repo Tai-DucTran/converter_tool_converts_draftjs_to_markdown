@@ -1,11 +1,7 @@
-import 'dart:developer' as deve show log;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:learn_quill_flutter/utills/converter.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:email_validator/email_validator.dart';
-
 class MarkDownDisplay extends StatelessWidget {
   const MarkDownDisplay({super.key});
 
@@ -393,8 +389,8 @@ class MarkDownDisplay extends StatelessWidget {
     };
 
     String markdownDataJob = convertBlocksToString(jobDescription);
-    String markdownDataCompany = convertBlocksToString(description);
-    String markdownDataCulture = convertBlocksToString(cultureJson);
+    // String markdownDataCompany = convertBlocksToString(description);
+    // String markdownDataCulture = convertBlocksToString(cultureJson);
 
     return Scaffold(
       appBar: AppBar(
