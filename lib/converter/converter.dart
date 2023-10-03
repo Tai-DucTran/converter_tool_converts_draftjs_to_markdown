@@ -1,3 +1,6 @@
+import 'dart:developer' as deve show log;
+
+import 'package:learn_quill_flutter/models/inline_style.dart';
 //* [convertBlocksToString]:
 // - It will take json data and split [blocks] to small [block]s
 // - Depending on the block's [style] and [entityRanges], it constructs the appropriate Markdown-style formatting for each block's content.
@@ -121,7 +124,6 @@ String _addInlineStyle(Map<String, dynamic> block) {
   final text = block['text'] as String;
   final inlineStyleRanges = block['inlineStyleRanges'] as List;
   final inlineStyleRangesLength = inlineStyleRanges.length;
-  final newInlineStyleRanges = <Map<String, dynamic>>[];
 
   // Reorganize the inlineStyleRanges by increasing offset:
   if (inlineStyleRangesLength > 1) {
@@ -131,93 +133,32 @@ String _addInlineStyle(Map<String, dynamic> block) {
     );
   }
 
-  // Merge styles with equal "offset" to avoid the conflict
-
-  for (var i = 0; i < inlineStyleRangesLength; i++) {
-    // Check if [inlineStyleRanges] is greater than or equal 2
-    if (i < inlineStyleRangesLength - 1) {
-      final curInlineStyleRanges = inlineStyleRanges[i] as Map<String, dynamic>;
-      final nexInlineStyleRanges =
-          inlineStyleRanges[i + 1] as Map<String, dynamic>;
-
-      // Check if current [offset] is equal next [offset]
-      if (curInlineStyleRanges['offset'] == nexInlineStyleRanges['offset']) {
-        late var newRangesLenght = 0;
-        final firstInlineStyleLenght = curInlineStyleRanges['length'] as int;
-        final secondInlineStyleLenght = nexInlineStyleRanges['length'] as int;
-
-        if (firstInlineStyleLenght >= secondInlineStyleLenght) {
-          newRangesLenght = firstInlineStyleLenght;
-        } else {
-          newRangesLenght = secondInlineStyleLenght;
-        }
-        // Merge styles if those equal "offset" and "length"
-        newInlineStyleRanges.add({
-          'style':
-              "${curInlineStyleRanges["style"]} ${nexInlineStyleRanges["style"]}",
-          'length': newRangesLenght,
-          'offset': curInlineStyleRanges['offset'],
-        });
-      } else {
-        newInlineStyleRanges.add(inlineStyleRanges[i] as Map<String, dynamic>);
-      }
-    } else {
-      // Add non-merged styles to the merged list
-      final curInlineStyleRanges = inlineStyleRanges[i] as Map<String, dynamic>;
-      newInlineStyleRanges.add(curInlineStyleRanges);
-    }
-    i++;
-  }
-
-  //* A. Avoid the conflict with complex inlineStyleRanges and simplize these words be united style
-  if (newInlineStyleRanges.length >= 2) {
-    var i = 0;
-    while (i < newInlineStyleRanges.length - 1) {
-      if (_doesBelong(newInlineStyleRanges[i], newInlineStyleRanges[i + 1])) {
-        newInlineStyleRanges.removeAt(i + 1);
-      } else {
-        i++;
-      }
-    }
-  }
+  deve.log('inlineStyleRanges: $inlineStyleRanges');
 
   final formattedText = StringBuffer();
-
+  final markDownFormatList = [];
   var currentOffset = 0;
-  for (final styleRange in newInlineStyleRanges) {
-    late final style = styleRange['style'] as String;
-    final offset = styleRange['offset'] as int;
-    final length = styleRange['length'] as int;
+  for (final inlineStyleRange in inlineStyleRanges) {
+    // (String 'inserMarkdownStyle', int startPos, intEndPos)
 
-    // Add the text before the style range
-    formattedText.write(text.substring(currentOffset, offset));
-
-    // Apply the style to the specified range of text
-    final styledText = text.substring(offset, offset + length);
-
-    // Check style:
-    var textFormatStyle = _textFormatStyle(
-      style: style,
-      styledText: styledText,
+    final inlineStyle = InlineStyle(
+      style: inlineStyleRange['style'],
+      offset: inlineStyleRange['offset'],
+      length: inlineStyleRange['length'],
     );
 
-    if (!textFormatStyle.endsWith(' ')) {
-      textFormatStyle = '$textFormatStyle\n';
-    }
+    final endOffSet = inlineStyle.offset + inlineStyle.length;
+    final markDownFormat = _getMarkdownStyle(inlineStyle.style);
 
-    // Add the [formatText]
-    if (!formattedText.toString().endsWith(' ')) {
-      formattedText.write('');
-    }
-
-    // Add the [formatText]
-    formattedText.write(textFormatStyle);
-
-    currentOffset = offset + length;
+    markDownFormatList
+      ..add((markDownFormat: markDownFormat, offset: inlineStyle.offset))
+      ..add((markDownFormat: markDownFormat, offset: endOffSet));
   }
 
-  // Add the remaining text after the last style range
   formattedText.write(text.substring(currentOffset));
+  markDownFormatList.sort((a, b) => a.offset.compareTo(b.offset));
+
+  deve.log('markDownFormatList: $markDownFormatList');
 
   return formattedText.toString();
 }
@@ -265,4 +206,30 @@ class MarkdownException implements Exception {
 
   @override
   String toString() => 'MarkdownException: $message';
+}
+
+enum FormattedTextStyle {
+  bold,
+  italic,
+  underline,
+}
+
+FormattedTextStyle _getFormattedTextStyle(String style) {
+  if (style == 'BOLD') {
+    return FormattedTextStyle.bold;
+  }
+  if (style == 'ITALIC') {
+    return FormattedTextStyle.italic;
+  } else {
+    return FormattedTextStyle.underline;
+  }
+}
+
+String _getMarkdownStyle(String style) {
+  final formattedTextStyle = _getFormattedTextStyle(style);
+  return switch (formattedTextStyle) {
+    FormattedTextStyle.bold => '**',
+    FormattedTextStyle.italic => '*',
+    FormattedTextStyle.underline => '**',
+  };
 }
