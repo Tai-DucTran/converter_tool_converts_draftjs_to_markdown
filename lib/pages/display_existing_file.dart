@@ -1,3 +1,4 @@
+import 'dart:developer' as deve show log;
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:learn_quill_flutter/converter/converter.dart';
@@ -367,6 +368,7 @@ class MarkDownDisplay extends StatelessWidget {
     String markdownDataCulture = convertBlocksToString(cultureJson);
     String markdownDataCompany = convertBlocksToString(description);
 
+    deve.log(markdownDataCompany);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Display Existing Text'),

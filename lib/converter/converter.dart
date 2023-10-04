@@ -1,6 +1,4 @@
 import 'dart:developer' as deve show log;
-
-import 'package:learn_quill_flutter/models/inline_style.dart';
 //* [convertBlocksToString]:
 // - It will take json data and split [blocks] to small [block]s
 // - Depending on the block's [style] and [entityRanges], it constructs the appropriate Markdown-style formatting for each block's content.
@@ -137,7 +135,7 @@ String _addInlineStyle(Map<String, dynamic> block) {
   final markDownFormatList = [];
 
   for (final inlineStyleRange in inlineStyleRanges) {
-    final inlineStyle = InlineStyle(
+    final inlineStyle = (
       style: inlineStyleRange['style'],
       offset: inlineStyleRange['offset'],
       length: inlineStyleRange['length'],
@@ -145,23 +143,25 @@ String _addInlineStyle(Map<String, dynamic> block) {
 
     final endOffSet = inlineStyle.offset + inlineStyle.length;
 
-    final markDownFormat = _getMarkdownStyle(inlineStyle.style);
+    if (inlineStyle.length != 1) {
+      final markDownFormat = _getMarkdownStyle(inlineStyle.style);
 
-    markDownFormatList
-      ..add(
-        (
-          markDownFormat: markDownFormat,
-          offset: inlineStyle.offset,
-          offsetType: 'start'
-        ),
-      )
-      ..add(
-        (
-          markDownFormat: markDownFormat,
-          offset: endOffSet,
-          offsetType: 'end',
-        ),
-      );
+      markDownFormatList
+        ..add(
+          (
+            markDownFormat: markDownFormat,
+            offset: inlineStyle.offset,
+            offsetType: 'start'
+          ),
+        )
+        ..add(
+          (
+            markDownFormat: markDownFormat,
+            offset: endOffSet,
+            offsetType: 'end',
+          ),
+        );
+    }
   }
   markDownFormatList.sort((a, b) => a.offset.compareTo(b.offset));
   deve.log('markDownFormatList: $markDownFormatList');
@@ -212,12 +212,16 @@ String _addInlineStyle(Map<String, dynamic> block) {
 
     currentOffset = style.offset;
 
-    if (!text.substring(currentOffset, currentOffset + 1).endsWith(' ') &&
+    final nextOffset = currentOffset + 1;
+
+    if (nextOffset <= text.length &&
+        !text.substring(currentOffset, currentOffset + 1).endsWith(' ') &&
         style.offsetType == 'end') {
       formattedText.write(' ');
     }
   }
   formattedText.write(text.substring(currentOffset));
+  deve.log('formattedText: ${formattedText.toString()}');
   return formattedText.toString();
 }
 
