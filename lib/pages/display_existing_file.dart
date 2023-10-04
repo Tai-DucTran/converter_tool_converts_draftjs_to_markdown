@@ -364,8 +364,8 @@ class MarkDownDisplay extends StatelessWidget {
     };
 
     String markdownDataJob = convertBlocksToString(jobDescription);
-    // String markdownDataCompany = convertBlocksToString(description);
-    // String markdownDataCulture = convertBlocksToString(cultureJson);
+    String markdownDataCulture = convertBlocksToString(cultureJson);
+    String markdownDataCompany = convertBlocksToString(description);
 
     return Scaffold(
       appBar: AppBar(
@@ -381,8 +381,9 @@ class MarkDownDisplay extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: Markdown(
           data: '''
+$markdownDataCompany
 $markdownDataJob
-
+$markdownDataCulture
 ''',
           styleSheet: MarkdownStyleSheet(
               h1: const TextStyle(

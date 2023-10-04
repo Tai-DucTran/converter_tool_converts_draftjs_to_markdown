@@ -135,7 +135,7 @@ String _addInlineStyle(Map<String, dynamic> block) {
   deve.log('inlineStyleRanges: $inlineStyleRanges');
 
   final markDownFormatList = [];
-  var currentOffset = 0;
+
   for (final inlineStyleRange in inlineStyleRanges) {
     final inlineStyle = InlineStyle(
       style: inlineStyleRange['style'],
@@ -144,6 +144,7 @@ String _addInlineStyle(Map<String, dynamic> block) {
     );
 
     final endOffSet = inlineStyle.offset + inlineStyle.length;
+
     final markDownFormat = _getMarkdownStyle(inlineStyle.style);
 
     markDownFormatList
@@ -178,6 +179,7 @@ String _addInlineStyle(Map<String, dynamic> block) {
         offset: currentItem.offset,
         offsetType: currentItem.offsetType,
       );
+
       newMarkDownFormatList.removeLast();
       newMarkDownFormatList.add(mergedItem);
     } else {
@@ -188,6 +190,33 @@ String _addInlineStyle(Map<String, dynamic> block) {
 
   // add markdownFormat to text:
   final formattedText = StringBuffer();
+  var currentOffset = 0;
+  for (final style in newMarkDownFormatList) {
+    final unstyleContent = text.substring(currentOffset, style.offset);
+
+    final newUnstyleContent =
+        unstyleContent.endsWith(' ') && style.offsetType == 'end'
+            ? unstyleContent.trim()
+            : unstyleContent;
+
+    // Add the text content from beginning to first offset style
+    formattedText.write(newUnstyleContent);
+
+    deve.log('formattedText: $formattedText');
+
+    final markDownFormat = style.markDownFormat;
+
+    formattedText.write(markDownFormat);
+
+    deve.log('formattedText: $formattedText');
+
+    currentOffset = style.offset;
+
+    if (!text.substring(currentOffset, currentOffset + 1).endsWith(' ') &&
+        style.offsetType == 'end') {
+      formattedText.write(' ');
+    }
+  }
   formattedText.write(text.substring(currentOffset));
   return formattedText.toString();
 }
@@ -225,27 +254,3 @@ String _getMarkdownStyle(String style) {
     FormattedTextStyle.underline => '**',
   };
 }
-
-
-
-  // // merge same offset and same lenght:
-  // final newMarkDownFormatList = [];
-  // for (var i = 0; i < markDownFormatList.length; i++) {
-  //   final currentItem = markDownFormatList[i];
-  //   deve.log('currentItem: $currentItem');
-
-  //   if (newMarkDownFormatList.isNotEmpty &&
-  //       currentItem.offset == newMarkDownFormatList.last.offset &&
-  //       currentItem.offsetType == newMarkDownFormatList.last.offsetType) {
-  //     final mergedItem = (
-  //       format: currentItem.format + newMarkDownFormatList.last.format,
-  //       offset: currentItem.offset,
-  //       offsetType: currentItem.offsetType,
-  //     );
-  //     newMarkDownFormatList.removeLast();
-  //     newMarkDownFormatList.add(mergedItem);
-  //   } else {
-  //     newMarkDownFormatList.add(currentItem);
-  //   }
-  // }
-  // deve.log('newMarkDownFormatList: $newMarkDownFormatList');
