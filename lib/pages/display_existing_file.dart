@@ -382,6 +382,7 @@ class MarkDownDisplay extends StatelessWidget {
         child: Markdown(
           data: '''
 $markdownDataJob
+
 ''',
           styleSheet: MarkdownStyleSheet(
               h1: const TextStyle(

@@ -132,15 +132,11 @@ String _addInlineStyle(Map<String, dynamic> block) {
           ((a as Map)['offset'] as int).compareTo((b as Map)['offset'] as int),
     );
   }
-
   deve.log('inlineStyleRanges: $inlineStyleRanges');
 
-  final formattedText = StringBuffer();
   final markDownFormatList = [];
   var currentOffset = 0;
   for (final inlineStyleRange in inlineStyleRanges) {
-    // (String 'inserMarkdownStyle', int startPos, intEndPos)
-
     final inlineStyle = InlineStyle(
       style: inlineStyleRange['style'],
       offset: inlineStyleRange['offset'],
@@ -151,53 +147,49 @@ String _addInlineStyle(Map<String, dynamic> block) {
     final markDownFormat = _getMarkdownStyle(inlineStyle.style);
 
     markDownFormatList
-      ..add((markDownFormat: markDownFormat, offset: inlineStyle.offset))
-      ..add((markDownFormat: markDownFormat, offset: endOffSet));
+      ..add(
+        (
+          markDownFormat: markDownFormat,
+          offset: inlineStyle.offset,
+          offsetType: 'start'
+        ),
+      )
+      ..add(
+        (
+          markDownFormat: markDownFormat,
+          offset: endOffSet,
+          offsetType: 'end',
+        ),
+      );
   }
-
-  formattedText.write(text.substring(currentOffset));
   markDownFormatList.sort((a, b) => a.offset.compareTo(b.offset));
-
   deve.log('markDownFormatList: $markDownFormatList');
 
+  // merge same offset and same lenght:
+  final newMarkDownFormatList = [];
+  for (var i = 0; i < markDownFormatList.length; i++) {
+    final currentItem = markDownFormatList[i];
+    if (newMarkDownFormatList.isNotEmpty &&
+        currentItem.offset == newMarkDownFormatList.last.offset &&
+        currentItem.offsetType == newMarkDownFormatList.last.offsetType) {
+      final mergedItem = (
+        markDownFormat: (currentItem.markDownFormat) +
+            (newMarkDownFormatList.last.markDownFormat),
+        offset: currentItem.offset,
+        offsetType: currentItem.offsetType,
+      );
+      newMarkDownFormatList.removeLast();
+      newMarkDownFormatList.add(mergedItem);
+    } else {
+      newMarkDownFormatList.add(currentItem);
+    }
+  }
+  deve.log('newMarkDownFormatList: $newMarkDownFormatList');
+
+  // add markdownFormat to text:
+  final formattedText = StringBuffer();
+  formattedText.write(text.substring(currentOffset));
   return formattedText.toString();
-}
-
-String _textFormatStyle({
-  required String style,
-  required String styledText,
-}) {
-//* B. Avoid to render [spacing] but it have format style
-  if (styledText == ' ') {
-    return '';
-  }
-  final newStyledText = styledText.trim();
-
-  // Markdown haven't supported underline yet. If style is UNDERLINE, it will be replace with BOLD
-  if (style == 'BOLD' || style == 'UNDERLINE') {
-    return '**$newStyledText**';
-  } else if (style == 'ITALIC') {
-    return '*$newStyledText*';
-  } else if (style == 'BOLD ITALIC' ||
-      style == 'ITALIC BOLD' ||
-      style == 'UNDERLINE ITALIC' ||
-      style == 'ITALIC UNDERLINE') {
-    return '***$newStyledText***';
-  } else if (style == 'BOLD UNDERLINE' || style == 'UNDERLINE BOLD') {
-    return '**$newStyledText**';
-  } else {
-    return newStyledText;
-  }
-}
-
-bool _doesBelong(Map<String, dynamic> parent, Map<String, dynamic> child) {
-  final parentStart = parent['offset'] as int;
-  final parentEnd = parentStart + (parent['length'] as int);
-
-  final childStart = child['offset'] as int;
-  final childEnd = childStart + (child['length'] as int);
-
-  return childStart >= parentStart && childEnd <= parentEnd;
 }
 
 class MarkdownException implements Exception {
@@ -233,3 +225,27 @@ String _getMarkdownStyle(String style) {
     FormattedTextStyle.underline => '**',
   };
 }
+
+
+
+  // // merge same offset and same lenght:
+  // final newMarkDownFormatList = [];
+  // for (var i = 0; i < markDownFormatList.length; i++) {
+  //   final currentItem = markDownFormatList[i];
+  //   deve.log('currentItem: $currentItem');
+
+  //   if (newMarkDownFormatList.isNotEmpty &&
+  //       currentItem.offset == newMarkDownFormatList.last.offset &&
+  //       currentItem.offsetType == newMarkDownFormatList.last.offsetType) {
+  //     final mergedItem = (
+  //       format: currentItem.format + newMarkDownFormatList.last.format,
+  //       offset: currentItem.offset,
+  //       offsetType: currentItem.offsetType,
+  //     );
+  //     newMarkDownFormatList.removeLast();
+  //     newMarkDownFormatList.add(mergedItem);
+  //   } else {
+  //     newMarkDownFormatList.add(currentItem);
+  //   }
+  // }
+  // deve.log('newMarkDownFormatList: $newMarkDownFormatList');
