@@ -1,6 +1,7 @@
+import 'dart:developer' as deve show log;
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:learn_quill_flutter/converter/converter.dart';
+import 'package:learn_quill_flutter/converter/converter_v2.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MarkDownDisplay extends StatelessWidget {
@@ -10,23 +11,6 @@ class MarkDownDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     final jobDescription = {
       "blocks": [
-        {
-          "key": "capve",
-          "data": {},
-          "text":
-              "WEALLNET is a brand new experience agency that exists to reimagine what an experience can be. We do that by pushing the boundaries of what’s possible in every format — virtual, live or hybrid. Born out of smart insights and built creatively with a content-first approach, our vision is imaginative and engaging, innovative beyond expectation, and flawlessly executed. Each and every day we are driven to do one thing: Live Extraordinary.  ",
-          "type": "unstyled",
-          "depth": 0,
-          "entityRanges": [],
-          "inlineStyleRanges": [
-            {"style": "BOLD", "length": 8, "offset": 0},
-            {"style": "BOLD", "length": 4, "offset": 418},
-            {"style": "BOLD", "length": 14, "offset": 423},
-            {"style": "ITALIC", "length": 4, "offset": 418},
-            {"style": "ITALIC", "length": 15, "offset": 423},
-            {"style": "UNDERLINE", "length": 13, "offset": 423}
-          ]
-        },
         {
           "key": "95on6",
           "data": {},
@@ -39,29 +23,6 @@ class MarkDownDisplay extends StatelessWidget {
             {"style": "BOLD", "length": 4, "offset": 31},
             {"style": "UNDERLINE", "length": 9, "offset": 17},
             {"style": "ITALIC", "length": 4, "offset": 31}
-          ]
-        },
-        {
-          "key": "5vn8d",
-          "data": {},
-          "text":
-              "Structure narratives for client presentations and push systematic design work to drive impact and creative edge.",
-          "type": "unordered-list-item",
-          "depth": 0,
-          "entityRanges": [],
-          "inlineStyleRanges": []
-        },
-        {
-          "key": "fn1ut",
-          "data": {},
-          "text": "You’re the right fit if you:",
-          "type": "unstyled",
-          "depth": 0,
-          "entityRanges": [],
-          "inlineStyleRanges": [
-            {"style": "BOLD", "length": 28, "offset": 0},
-            {"style": "UNDERLINE", "length": 28, "offset": 0},
-            {"style": "ITALIC", "length": 28, "offset": 0}
           ]
         },
       ],
@@ -403,10 +364,11 @@ class MarkDownDisplay extends StatelessWidget {
       }
     };
 
-    String markdownDataJob = convertBlocksToString(jobDescription);
-    String markdownDataCompany = convertBlocksToString(description);
-    String markdownDataCulture = convertBlocksToString(cultureJson);
+    String markdownDataJob = convertBlocksToStringV2(jobDescription);
+    String markdownDataCulture = convertBlocksToStringV2(cultureJson);
+    String markdownDataCompany = convertBlocksToStringV2(description);
 
+    deve.log(markdownDataJob);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Display Existing Text'),
@@ -422,6 +384,8 @@ class MarkDownDisplay extends StatelessWidget {
         child: Markdown(
           data: '''
 $markdownDataJob
+$markdownDataCulture
+$markdownDataCompany
 ''',
           styleSheet: MarkdownStyleSheet(
               h1: const TextStyle(
