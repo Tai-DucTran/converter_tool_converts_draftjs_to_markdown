@@ -2,6 +2,7 @@ import 'dart:developer' as deve show log;
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:learn_quill_flutter/converter/converter.dart';
+import 'package:learn_quill_flutter/converter/converter_v2.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MarkDownDisplay extends StatelessWidget {
@@ -364,11 +365,27 @@ class MarkDownDisplay extends StatelessWidget {
       }
     };
 
-    String markdownDataJob = convertBlocksToString(jobDescription);
-    String markdownDataCulture = convertBlocksToString(cultureJson);
-    String markdownDataCompany = convertBlocksToString(description);
+    final smallSample = {
+      "blocks": [
+        {
+          "key": "2cpbk",
+          "data": {},
+          "text": "Let’s Realize Human Potential.",
+          "type": "unstyled",
+          "depth": 0,
+          "entityRanges": [],
+          "inlineStyleRanges": [
+            {"style": "BOLD", "length": 30, "offset": 0},
+            {"style": "ITALIC", "length": 29, "offset": 0}
+          ]
+        },
+      ]
+    };
+    String markdownDataJob = convertBlocksToStringV2(jobDescription);
+    String markdownDataCulture = convertBlocksToStringV2(cultureJson);
+    String markdownDataCompany = convertBlocksToStringV2(description);
 
-    deve.log(markdownDataCompany);
+    deve.log(markdownDataJob);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Display Existing Text'),
@@ -383,9 +400,9 @@ class MarkDownDisplay extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: Markdown(
           data: '''
-$markdownDataCompany
 $markdownDataJob
 $markdownDataCulture
+$markdownDataCompany
 ''',
           styleSheet: MarkdownStyleSheet(
               h1: const TextStyle(
