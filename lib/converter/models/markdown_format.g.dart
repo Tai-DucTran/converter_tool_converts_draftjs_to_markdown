@@ -10,7 +10,7 @@ _$MarkDownFormatImpl _$$MarkDownFormatImplFromJson(Map<String, dynamic> json) =>
     _$MarkDownFormatImpl(
       format: json['format'] as String,
       offset: json['offset'] as int,
-      offsetType: json['offsetType'] as String,
+      offsetType: $enumDecode(_$OffsetTypeEnumMap, json['offsetType']),
     );
 
 Map<String, dynamic> _$$MarkDownFormatImplToJson(
@@ -18,5 +18,10 @@ Map<String, dynamic> _$$MarkDownFormatImplToJson(
     <String, dynamic>{
       'format': instance.format,
       'offset': instance.offset,
-      'offsetType': instance.offsetType,
+      'offsetType': _$OffsetTypeEnumMap[instance.offsetType]!,
     };
+
+const _$OffsetTypeEnumMap = {
+  OffsetType.start: 'start',
+  OffsetType.end: 'end',
+};

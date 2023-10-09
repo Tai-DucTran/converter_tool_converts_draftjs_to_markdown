@@ -22,7 +22,7 @@ MarkDownFormat _$MarkDownFormatFromJson(Map<String, dynamic> json) {
 mixin _$MarkDownFormat {
   String get format => throw _privateConstructorUsedError;
   int get offset => throw _privateConstructorUsedError;
-  String get offsetType => throw _privateConstructorUsedError;
+  OffsetType get offsetType => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +36,7 @@ abstract class $MarkDownFormatCopyWith<$Res> {
           MarkDownFormat value, $Res Function(MarkDownFormat) then) =
       _$MarkDownFormatCopyWithImpl<$Res, MarkDownFormat>;
   @useResult
-  $Res call({String format, int offset, String offsetType});
+  $Res call({String format, int offset, OffsetType offsetType});
 }
 
 /// @nodoc
@@ -68,7 +68,7 @@ class _$MarkDownFormatCopyWithImpl<$Res, $Val extends MarkDownFormat>
       offsetType: null == offsetType
           ? _value.offsetType
           : offsetType // ignore: cast_nullable_to_non_nullable
-              as String,
+              as OffsetType,
     ) as $Val);
   }
 }
@@ -81,7 +81,7 @@ abstract class _$$MarkDownFormatImplCopyWith<$Res>
       __$$MarkDownFormatImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String format, int offset, String offsetType});
+  $Res call({String format, int offset, OffsetType offsetType});
 }
 
 /// @nodoc
@@ -111,7 +111,7 @@ class __$$MarkDownFormatImplCopyWithImpl<$Res>
       offsetType: null == offsetType
           ? _value.offsetType
           : offsetType // ignore: cast_nullable_to_non_nullable
-              as String,
+              as OffsetType,
     ));
   }
 }
@@ -130,7 +130,7 @@ class _$MarkDownFormatImpl implements _MarkDownFormat {
   @override
   final int offset;
   @override
-  final String offsetType;
+  final OffsetType offsetType;
 
   @override
   String toString() {
@@ -171,7 +171,7 @@ abstract class _MarkDownFormat implements MarkDownFormat {
   const factory _MarkDownFormat(
       {required final String format,
       required final int offset,
-      required final String offsetType}) = _$MarkDownFormatImpl;
+      required final OffsetType offsetType}) = _$MarkDownFormatImpl;
 
   factory _MarkDownFormat.fromJson(Map<String, dynamic> json) =
       _$MarkDownFormatImpl.fromJson;
@@ -181,7 +181,7 @@ abstract class _MarkDownFormat implements MarkDownFormat {
   @override
   int get offset;
   @override
-  String get offsetType;
+  OffsetType get offsetType;
   @override
   @JsonKey(ignore: true)
   _$$MarkDownFormatImplCopyWith<_$MarkDownFormatImpl> get copyWith =>

@@ -1,5 +1,7 @@
 import 'dart:developer' as deve show log;
 
+import 'package:learn_quill_flutter/converter/models/markdown_format.dart';
+
 enum _BlockStyle {
   unStyled,
   unorderedList,
@@ -102,13 +104,13 @@ String _addInlineStyleV2(Map<String, dynamic> block) {
   }
   deve.log('inlineStyleRanges: $inlineStyleRanges');
 
-  final markDownFormatList = [];
+  final markDownFormatList = <MarkDownFormat>[];
 
   for (final inlineStyleRange in inlineStyleRanges) {
     final inlineStyle = (
-      style: inlineStyleRange['style'],
-      offset: inlineStyleRange['offset'],
-      length: inlineStyleRange['length'],
+      style: (inlineStyleRange as Map)['style'] as String,
+      offset: inlineStyleRange['offset'] as int,
+      length: inlineStyleRange['length'] as int,
     );
 
     final endOffSet = inlineStyle.offset + inlineStyle.length;
@@ -118,15 +120,15 @@ String _addInlineStyleV2(Map<String, dynamic> block) {
 
       markDownFormatList
         ..add(
-          (
-            markDownFormat: markDownFormat,
+          MarkDownFormat(
+            format: markDownFormat,
             offset: inlineStyle.offset,
-            offsetType: OffsetType.start
+            offsetType: OffsetType.start,
           ),
         )
         ..add(
-          (
-            markDownFormat: markDownFormat,
+          MarkDownFormat(
+            format: markDownFormat,
             offset: endOffSet,
             offsetType: OffsetType.end,
           ),
@@ -137,21 +139,29 @@ String _addInlineStyleV2(Map<String, dynamic> block) {
   deve.log('markDownFormatList: $markDownFormatList');
 
   // merge same offset and same lenght:
-  final newMarkDownFormatList = [];
+  final newMarkDownFormatList = <MarkDownFormat>[];
   for (var i = 0; i < markDownFormatList.length; i++) {
     final currentItem = markDownFormatList[i];
     if (newMarkDownFormatList.isNotEmpty &&
         currentItem.offset == newMarkDownFormatList.last.offset &&
         currentItem.offsetType == newMarkDownFormatList.last.offsetType) {
-      final mergedItem = (
-        markDownFormat: (currentItem.markDownFormat) +
-            (newMarkDownFormatList.last.markDownFormat),
+      // Handle UNDERLINE style for legacy JobDescription/Company Profile.
+      // If has both style BOLD and UNDERLINE at same Offset and same Length
+      //* [hasSameBoldAndUnderline]is true, remove one
+
+      final hasSameBoldAndUnderline = currentItem.format == '**' &&
+          currentItem.format == newMarkDownFormatList.last.format;
+      final mergedItem = MarkDownFormat(
+        format: !hasSameBoldAndUnderline
+            ? (currentItem.format) + (newMarkDownFormatList.last.format)
+            : currentItem.format,
         offset: currentItem.offset,
         offsetType: currentItem.offsetType,
       );
 
-      newMarkDownFormatList.removeLast();
-      newMarkDownFormatList.add(mergedItem);
+      newMarkDownFormatList
+        ..removeLast()
+        ..add(mergedItem);
     } else {
       newMarkDownFormatList.add(currentItem);
     }
@@ -165,9 +175,9 @@ String _addInlineStyleV2(Map<String, dynamic> block) {
   deve.log('text: ${text.length}');
 
   for (final style in newMarkDownFormatList) {
-    final format = style.markDownFormat;
+    final format = style.format;
     final offset = style.offset;
-    final offsetType = style.offsetType as OffsetType;
+    final offsetType = style.offsetType;
 
     deve.log('offset == splitedText.length: ${offset == splitedText.length}');
 
@@ -178,13 +188,19 @@ String _addInlineStyleV2(Map<String, dynamic> block) {
         } else if (splitedText[offset] == ' ') {
           // splitedText.replaceRange(offset + 1, offset + 2,
           //     ['$format${splitedText[offset + 1]}']);
-          splitedText[offset + 1] = ('$format${splitedText[offset + 1]}');
+          splitedText[offset + 1] = '$format${splitedText[offset + 1]}';
         } else {
           splitedText[offset] = '$format${splitedText[offset]}';
         }
       case OffsetType.end:
         if (offset == splitedText.length) {
-          splitedText.add('$format');
+          if (splitedText.last != ' ') {
+            splitedText.add(format);
+          } else {
+            splitedText
+              ..removeLast()
+              ..add(format);
+          }
         } else if (splitedText[offset] == ' ') {
           // splitedText.replaceRange(
           //     offset - 1, offset, ['${splitedText[offset - 1]}$format']);
@@ -205,7 +221,7 @@ String _addInlineStyleV2(Map<String, dynamic> block) {
   final result = splitedText.join();
   deve.log('splitedText after joining: $result');
 
-  return result.toString();
+  return result;
 }
 
 class MarkdownException implements Exception {
