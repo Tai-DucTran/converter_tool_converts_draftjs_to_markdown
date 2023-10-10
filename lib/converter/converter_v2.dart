@@ -1,42 +1,28 @@
-import 'dart:developer' as deve show log;
-
 import 'package:learn_quill_flutter/converter/models/markdown_format.dart';
 
-enum _BlockStyle {
-  unStyled,
-  unorderedList,
-  orderedList,
-}
+//* [convertBlocksToString]:
+// - It will take json data and split [blocks] to small [block]s
+// - Depending on the block's [style] and [entityRanges], it constructs the appropriate Markdown-style formatting for each block's content.
+// - If the block has entity ranges (such as links or images), it retrieves the entity map data and formats the content accordingly.
+// _ If [_addInlineStyle] is error, will return text without any format style
 
-enum _EntityMapType {
-  image,
-  embeddedLink,
-  link,
-}
+//* [_addInlineStyle]:
+/// - processes inline style ranges within a block
+/// 1. Comparing and reorganizing the inlineStyleRanges by increasing offset.
+/// 2. Break down every inlineStyle into 2 [MarkDownFormat] based on [OffsetType.start] Or [OffsetType.end]
+/// 3. Check if is there any [MarkDownFormat] has a same offset and same length, then merge those into one
+///
+/// Example:
+/// - MarkdownFormat(format: **, offset: 0, offsetType: start)
+/// - MarkdownFormat(format: *, offset: 0, offsetType: start)
+/// merged & create a new [MarkDownFormat]:
+/// - MarkdownFormat(format: ***, offset: 0, offsetType: start)
+///
+/// 4. Split the block content into a list<String>
+/// 5. Insert [MarkDownFormat]in list<String> based on offset and [OffsetType]
+/// 6. Join those items together
 
-_EntityMapType _getEnityMapType(String type) {
-  switch (type) {
-    case 'IMAGE':
-      return _EntityMapType.image;
-    case 'EMBEDDED_LINK':
-      return _EntityMapType.embeddedLink;
-    default:
-      return _EntityMapType.link;
-  }
-}
-
-_BlockStyle _getSentenceType(String type) {
-  switch (type) {
-    case 'ordered-list-item':
-      return _BlockStyle.orderedList;
-    case 'unordered-list-item':
-      return _BlockStyle.unorderedList;
-    default:
-      return _BlockStyle.unStyled;
-  }
-}
-
-String convertBlocksToStringV2(Map<String, dynamic> json) {
+String convertDraftJsToMarkDown(Map<String, dynamic> json) {
   final blocks = json['blocks'] as List;
   final entityMap = json['entityMap'] as Map;
 
@@ -48,7 +34,7 @@ String convertBlocksToStringV2(Map<String, dynamic> json) {
     final blockType = (blocks[i] as Map)['type'] as String;
     final curStyle = _getSentenceType(blockType);
 
-    //* If [_addInlineStyleV2] return (error), [curBlockContent] will return as text without any format style
+    /// If [_addInlineStyleV2] return (error), [curBlockContent] will return as text without any format style
     String curBlockContent;
     try {
       curBlockContent = _addInlineStyleV2(curBlock);
@@ -95,17 +81,16 @@ String _addInlineStyleV2(Map<String, dynamic> block) {
   final inlineStyleRanges = block['inlineStyleRanges'] as List;
   final inlineStyleRangesLength = inlineStyleRanges.length;
 
-  // Reorganize the inlineStyleRanges by increasing offset:
+  //* 1. Comparing and reorganizing the inlineStyleRanges by increasing offset.
   if (inlineStyleRangesLength > 1) {
     inlineStyleRanges.sort(
       (a, b) =>
           ((a as Map)['offset'] as int).compareTo((b as Map)['offset'] as int),
     );
   }
-  deve.log('inlineStyleRanges: $inlineStyleRanges');
-
   final markDownFormatList = <MarkDownFormat>[];
 
+  //* 2. Break down every inlineStyle into 2 [MarkDownFormat] based on [OffsetType.start] Or [OffsetType.end]
   for (final inlineStyleRange in inlineStyleRanges) {
     final inlineStyle = (
       style: (inlineStyleRange as Map)['style'] as String,
@@ -136,9 +121,8 @@ String _addInlineStyleV2(Map<String, dynamic> block) {
     }
   }
   markDownFormatList.sort((a, b) => a.offset.compareTo(b.offset));
-  deve.log('markDownFormatList: $markDownFormatList');
 
-  // merge same offset and same lenght:
+  //* 3. Check if is there any [MarkDownFormat] has a same offset and same length, then merge those into one
   final newMarkDownFormatList = <MarkDownFormat>[];
   for (var i = 0; i < markDownFormatList.length; i++) {
     final currentItem = markDownFormatList[i];
@@ -147,7 +131,7 @@ String _addInlineStyleV2(Map<String, dynamic> block) {
         currentItem.offsetType == newMarkDownFormatList.last.offsetType) {
       // Handle UNDERLINE style for legacy JobDescription/Company Profile.
       // If has both style BOLD and UNDERLINE at same Offset and same Length
-      //* [hasSameBoldAndUnderline]is true, remove one
+      // [hasSameBoldAndUnderline]is true, remove one
 
       final hasSameBoldAndUnderline = currentItem.format == '**' &&
           currentItem.format == newMarkDownFormatList.last.format;
@@ -167,27 +151,19 @@ String _addInlineStyleV2(Map<String, dynamic> block) {
     }
   }
 
-  //* Split the content into a list<words>
+  //* 4. Split the block content into a list<String>
   final splitedText = text.split('').toList();
-  deve.log('newMarkDownFormatList: $newMarkDownFormatList');
-  deve.log('splitedText: $splitedText');
-  deve.log('length: ${splitedText.length}');
-  deve.log('text: ${text.length}');
-
   for (final style in newMarkDownFormatList) {
     final format = style.format;
     final offset = style.offset;
     final offsetType = style.offsetType;
 
-    deve.log('offset == splitedText.length: ${offset == splitedText.length}');
-
+    //* 5. Insert [MarkDownFormat]in list<String> based on offset and [OffsetType]
     switch (offsetType) {
       case OffsetType.start:
         if (offset == 0) {
           splitedText.first = '$format${splitedText.first}';
         } else if (splitedText[offset] == ' ') {
-          // splitedText.replaceRange(offset + 1, offset + 2,
-          //     ['$format${splitedText[offset + 1]}']);
           splitedText[offset + 1] = '$format${splitedText[offset + 1]}';
         } else {
           splitedText[offset] = '$format${splitedText[offset]}';
@@ -202,8 +178,6 @@ String _addInlineStyleV2(Map<String, dynamic> block) {
               ..add(format);
           }
         } else if (splitedText[offset] == ' ') {
-          // splitedText.replaceRange(
-          //     offset - 1, offset, ['${splitedText[offset - 1]}$format']);
           splitedText[offset - 1] = '${splitedText[offset - 1]}$format';
         } else if (splitedText[offset - 1] == ' ' &&
             splitedText[offset + 1] != '') {
@@ -212,15 +186,9 @@ String _addInlineStyleV2(Map<String, dynamic> block) {
           splitedText[offset] = '$format${splitedText[offset]}';
         }
     }
-
-    deve.log('splitedText before joining: $splitedText');
   }
-
-  deve.log('splitedText before joining: $splitedText');
-
+  //* 6. Join those items together
   final result = splitedText.join();
-  deve.log('splitedText after joining: $result');
-
   return result;
 }
 
@@ -232,7 +200,19 @@ class MarkdownException implements Exception {
   String toString() => 'MarkdownException: $message';
 }
 
-enum FormattedTextStyle {
+enum _BlockStyle {
+  unStyled,
+  unorderedList,
+  orderedList,
+}
+
+enum _EntityMapType {
+  image,
+  embeddedLink,
+  link,
+}
+
+enum _FormattedTextStyle {
   bold,
   italic,
   underline,
@@ -243,22 +223,44 @@ enum OffsetType {
   end,
 }
 
-FormattedTextStyle _getFormattedTextStyle(String style) {
+_EntityMapType _getEnityMapType(String type) {
+  switch (type) {
+    case 'IMAGE':
+      return _EntityMapType.image;
+    case 'EMBEDDED_LINK':
+      return _EntityMapType.embeddedLink;
+    default:
+      return _EntityMapType.link;
+  }
+}
+
+_BlockStyle _getSentenceType(String type) {
+  switch (type) {
+    case 'ordered-list-item':
+      return _BlockStyle.orderedList;
+    case 'unordered-list-item':
+      return _BlockStyle.unorderedList;
+    default:
+      return _BlockStyle.unStyled;
+  }
+}
+
+_FormattedTextStyle _getFormattedTextStyle(String style) {
   if (style == 'BOLD') {
-    return FormattedTextStyle.bold;
+    return _FormattedTextStyle.bold;
   }
   if (style == 'ITALIC') {
-    return FormattedTextStyle.italic;
+    return _FormattedTextStyle.italic;
   } else {
-    return FormattedTextStyle.underline;
+    return _FormattedTextStyle.underline;
   }
 }
 
 String _getMarkdownStyle(String style) {
   final formattedTextStyle = _getFormattedTextStyle(style);
   return switch (formattedTextStyle) {
-    FormattedTextStyle.bold => '**',
-    FormattedTextStyle.italic => '*',
-    FormattedTextStyle.underline => '**',
+    _FormattedTextStyle.bold => '**',
+    _FormattedTextStyle.italic => '*',
+    _FormattedTextStyle.underline => '**',
   };
 }
